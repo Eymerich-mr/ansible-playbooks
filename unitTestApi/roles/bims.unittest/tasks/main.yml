@@ -1,0 +1,212 @@
+- name: "Create network {{ slotname }}"
+  docker_network:
+    name: "{{ slotname }}"
+
+- name: "Create RAMDISK dir"
+  file:
+    path: "/media/ramdisk_{{ slotname }}"
+    state: directory
+  become: true
+
+- name: "Mount RAMDISK"
+  mount:
+    path: "/media/ramdisk_{{ slotname }}"
+    src: tmpfs
+    fstype: tmpfs
+    opts: "size=700M"
+    state: mounted
+  become: true
+
+- name: "Start activiti-database, connect to network {{ slotname }}"
+  docker_container:
+    name: "{{ slotname }}_activiti-database"
+    image: mysql:5.6
+    volumes:
+    - "/media/ramdisk_{{ slotname }}/mysql:/var/lib/mysql"
+    env:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: activiti
+      MYSQL_PASSWORD: activitidevlocal
+      MYSQL_DATABASE: activiti
+    networks:
+    - name: "{{ slotname }}"
+      aliases:
+      - activiti-database
+
+- name: "Start mongo, connect to network {{ slotname }}"
+  docker_container:
+    name: "{{ slotname }}_mongo"
+    image: mongo:3.6
+    volumes:
+    - "/media/ramdisk_{{ slotname }}/mongo:/data/db"
+    networks:
+    - name: "{{ slotname }}"
+      aliases:
+      - mongo
+
+- name: "Start redis, connect to network {{ slotname }}"
+  docker_container:
+    name: "{{ slotname }}_redis"
+    image: redis:3.2.1
+    networks:
+    - name: "{{ slotname }}"
+      aliases:
+      - redis
+
+- name: "Start s3, connect to network {{ slotname }}"
+  docker_container:
+    name: "{{ slotname }}_s3"
+    image: lphoward/fake-s3
+    networks:
+    - name: "{{ slotname }}"
+      aliases:
+      - s3
+
+- name: "Start sqs, connect to network {{ slotname }}"
+  docker_container:
+    name: "{{ slotname }}_sqs"
+    image: 042475824269.dkr.ecr.eu-west-1.amazonaws.com/phpmock:sqs
+    networks:
+    - name: "{{ slotname }}"
+      aliases:
+      - sqs
+
+- name: "ECR login"
+  shell: "$(aws ecr get-login --region eu-west-1 --no-include-email)"
+
+- name: "Get mysql IP address"
+  command: "docker inspect --format '{''{ .NetworkSettings.IPAddress }''}' {{ slotname }}_activiti-database"
+  register: mysql_ip_address
+
+- name: "Wait for mysql database"
+  wait_for:
+    host: "{{ mysql_ip_address.stdout }}"
+    port: 3306
+    search_regex: "mysql_native_password"
+
+#- name: Wait untils Jenkins web API is available
+#  shell: curl --head --silent http://localhost:8080/cli/
+#  register: result
+#  until: result.stdout.find("200 OK") != -1
+#  retries: 12
+#  delay: 5
+
+- name: "Start activiti, connect to network {{ slotname }}"
+  docker_container:
+    name: "{{ slotname }}_activiti"
+    image: 042475824269.dkr.ecr.eu-west-1.amazonaws.com/bims_bpm:latest
+    pull: yes
+    env:
+      BIMS_ENV: local
+      JAVA_OPTS: "-Xmx512m -XX:MaxMetaspaceSize=256m"
+    networks:
+    - name: "{{ slotname }}"
+      aliases:
+      - activiti
+
+- name: "Get mongo IP address"
+  command: "docker inspect --format '{''{ .NetworkSettings.IPAddress }''}' {{ slotname }}_mongo"
+  register: mongo_ip_address
+
+- name: "Wait for mongo database"
+  wait_for:
+    host: "{{ mongo_ip_address.stdout }}"
+    port: 27017
+
+#- name: "Start php-fpm, connect to network {{ slotname }}"
+#  docker_container:
+#    name: "{{ slotname }}_php-fpm"
+#    state: stopped
+#    image: 042475824269.dkr.ecr.eu-west-1.amazonaws.com/bims_api:pr
+#    pull: yes
+#    env:
+#      BIMS_ENV: local
+#      BIZTALK_HOST: 'http\:\/\/php-mock\/Services\/Sales\/biztalk.php\/'
+#      AWS_ACCESS_KEY_ID: "dummy"
+#      AWS_SECRET_ACCESS_KEY: "dummy"
+#    networks:
+#    - name: "{{ slotname }}"
+#      aliases:
+#      - php-fpm
+
+- name: "Start api-micro, connect to network {{ slotname }}"
+  docker_container:
+    name: "{{ slotname }}_php-fpm-micro"
+    state: stopped
+    image: 042475824269.dkr.ecr.eu-west-1.amazonaws.com/bims_api_micro:latest
+    pull: yes
+    env:
+      BIMS_ENV: local
+    networks:
+    - name: "{{ slotname }}"
+      aliases:
+      - php-fpm-micro
+
+- name: "Start web, connect to network {{ slotname }}"
+  docker_container:
+    name: "{{ slotname }}_ngnix"
+    state: stopped
+    image: 042475824269.dkr.ecr.eu-west-1.amazonaws.com/bims_web:latest
+    pull: yes
+    env:
+      BIMS_ENV: local
+      SYMFONY_ENV: dev
+    networks:
+    - name: "{{ slotname }}"
+      aliases:
+      - nginx
+
+- name: "Start phpmock, connect to network {{ slotname }}"
+  docker_container:
+    name: "{{ slotname }}_phpmock"
+    image: 042475824269.dkr.ecr.eu-west-1.amazonaws.com/phpmock:sit
+    pull: yes
+    networks:
+    - name: "{{ slotname }}"
+      aliases:
+      - php-mock
+
+- name: "Get activiti IP address"
+  command: "docker inspect --format '{''{ .NetworkSettings.IPAddress }''}' {{ slotname }}_activiti"
+  register: activiti_ip_address
+
+- name: "Wait for activiti"
+  wait_for:
+    host: "{{ activiti_ip_address.stdout }}"
+    port: 8080
+
+- name: Wait until Activiti API is available
+  uri:
+    url: "http://{{ activiti_ip_address.stdout }}:8080/activiti-rest/repository/models"
+    status_code: 401
+  register: result
+  until: result.status == 401
+  retries: 12
+  delay: 5
+
+- name: "Start php-fpm, connect to network {{ slotname }}"
+  docker_container:
+    name: "{{ slotname }}_php-fpm"
+    image: 042475824269.dkr.ecr.eu-west-1.amazonaws.com/bims_api:pr
+    pull: yes
+    command: "bin/phpunit --configuration app/phpunit.xml.dist {{ bundle }}"
+    detach: false
+    env:
+      BIMS_ENV: local
+      BIZTALK_HOST: 'http\:\/\/php-mock\/Services\/Sales\/biztalk.php\/'
+      AWS_ACCESS_KEY_ID: "dummy"
+      AWS_SECRET_ACCESS_KEY: "dummy"
+    networks:
+    - name: "{{ slotname }}"
+      aliases:
+      - php-fpm
+  register: async_results
+  async: 900
+
+- name: Check status every 30s, up to 900s
+  async_status:
+    jid: "{{ async_results.ansible_job_id }}"
+  register: async_poll_results
+  until: async_results.stdout
+  retries: 30
+  delay: 30

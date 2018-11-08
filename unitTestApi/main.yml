@@ -1,0 +1,9 @@
+---
+# This playbook is running the unit tests for BIMS API
+
+- hosts: all
+  vars:
+  - slotname: "ut1"
+  - bundle: "src/BCA/IntegrationBundle"
+  roles:
+  - bims.unittest
