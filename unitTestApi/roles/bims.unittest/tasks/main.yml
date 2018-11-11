@@ -201,12 +201,12 @@
       aliases:
       - php-fpm
   register: async_results
-  async: 900
+#  async: 900
 
-- name: Check status every 30s, up to 900s
-  async_status:
-    jid: "{{ async_results.ansible_job_id }}"
-  register: async_poll_results
-  until: async_results.stdout
-  retries: 30
-  delay: 30
+#- name: Check status every 30s, up to 900s
+#  async_status:
+#    jid: "{{ async_results.ansible_job_id }}"
+#  register: async_poll_results
+#  until: async_results.stdout
+#  retries: 30
+#  delay: 30
