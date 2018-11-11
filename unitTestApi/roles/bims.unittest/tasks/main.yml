@@ -213,7 +213,7 @@
 
 - name: "Debug3"
   debug:
-    var: {{ phpunit_results.stdout | regex_search('(Memory)') }}
+    var: "{{ phpunit_results.stdout | regex_search('(Memory)') }}""
 
 #- name: Check status every 30s, up to 900s
 #  async_status:
