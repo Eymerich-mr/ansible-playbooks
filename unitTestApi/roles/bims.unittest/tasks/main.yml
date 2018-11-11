@@ -200,6 +200,7 @@
     - name: "{{ slotname }}"
       aliases:
       - php-fpm
+  ignore_errors: yes
   register: phpunit_results
 #  async: 900
 
