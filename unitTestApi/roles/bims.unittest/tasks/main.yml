@@ -200,8 +200,20 @@
     - name: "{{ slotname }}"
       aliases:
       - php-fpm
-  register: async_results
+  register: phpunit_results
 #  async: 900
+
+- name: "Debug1"
+  debug:
+    var: phpunit_results
+
+- name: "Debug2"
+  debug:
+    var: phpunit_results.stdout
+
+- name: "Debug3"
+  debug:
+    var: {{ phpunit_results.stdout | regex_search('(Memory)') }}
 
 #- name: Check status every 30s, up to 900s
 #  async_status:
