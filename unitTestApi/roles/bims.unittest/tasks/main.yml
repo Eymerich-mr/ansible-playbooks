@@ -208,7 +208,7 @@
   set_stats:
       data:
         "results_{{ slotname }}":  "{{ phpunit_results }}"
-  failed_when: "{{ 'OK (' not in (phpunit_results.msg | regex_search('OK \(\d+ tests, \d+ assertions\)' | regex_escape())) }}"
+  failed_when: "{{ 'OK ' not in phpunit_results.msg | regex_search('OK \(\d+ tests, \d+ assertions\)' | regex_escape()) }}"
 
 - name: "Debug2"
   debug:
