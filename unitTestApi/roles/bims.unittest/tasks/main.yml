@@ -203,19 +203,16 @@
       - php-fpm
   ignore_errors: yes
   register: phpunit_results
-  failed_when: "{{ 'OK (' not in (phpunit_results.msg | regex_search('OK (d+ tests, d+ assertions)' | regex_escape())) }}"
-
-- name: "Debug1"
-  debug:
-    var: phpunit_results
+		
+- name: "Save results"
+  set_stats:
+      data:
+        "results_{{ slotname }}":  "{{ phpunit_results }}"
+  failed_when: "{{ 'OK (' not in (phpunit_results.msg | regex_search('OK \(\d+ tests, \d+ assertions\)' | regex_escape())) }}"
 
 - name: "Debug2"
   debug:
     var: phpunit_results.msg
-
-- name: "Debug3"
-  debug:
-    var: "{{ phpunit_results.msg | regex_search('OK (d+ tests, d+ assertions)' | regex_escape()) }}"
 
 #- name: Check status every 30s, up to 900s
 #  async_status:
