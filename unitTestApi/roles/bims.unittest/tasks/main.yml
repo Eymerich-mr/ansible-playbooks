@@ -189,7 +189,8 @@
     name: "{{ slotname }}_php-fpm"
     image: 042475824269.dkr.ecr.eu-west-1.amazonaws.com/bims_api:pr
     pull: yes
-    command: "bin/phpunit --configuration app/phpunit.xml.dist --testsuite {{ testSuite }} src"
+    working_dir: "/var/www/html/app"
+    command: "/var/www/html/bin/phpunit --testsuite {{ testSuite }}"
     detach: false
     env:
       BIMS_ENV: local
