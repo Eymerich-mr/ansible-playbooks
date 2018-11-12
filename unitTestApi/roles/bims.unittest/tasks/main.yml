@@ -215,7 +215,7 @@
 
 - name: "Debug3"
   debug:
-    var: "{{ phpunit_results.msg | regex_search('(Memory)') }}"
+    var: "{{ phpunit_results.msg | regex_search('OK \\(\\d+ tests, \\d+ assertions\\)') }}"
 
 #- name: Check status every 30s, up to 900s
 #  async_status:
