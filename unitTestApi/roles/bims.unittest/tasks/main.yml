@@ -203,7 +203,7 @@
       - php-fpm
   ignore_errors: yes
   register: phpunit_results
-		
+
 - name: "Save results"
   set_stats:
       data:
