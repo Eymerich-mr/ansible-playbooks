@@ -194,7 +194,7 @@
     working_dir: "/var/www/html/app"
     command: "/var/www/html/bin/phpunit --testsuite {{ testSuite }}"
     detach: false
-    auto_remove: yes
+    cleanup: yes
     recreate: yes
     env:
       BIMS_ENV: local
