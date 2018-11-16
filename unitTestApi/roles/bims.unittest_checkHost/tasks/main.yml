@@ -3,5 +3,7 @@
 - name: "Clean results"
   set_stats:
     data:
-      phpunit_results: "{{ {} }}"
+      IntegrationBundle: ""
+      CoreBundle: ""
+      SalesForceBundle: ""
     aggregate: no

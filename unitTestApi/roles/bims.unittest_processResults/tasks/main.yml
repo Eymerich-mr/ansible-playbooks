@@ -2,15 +2,10 @@
 
 - name: "Output test results"
   debug:
-    var: "{{ phpunit_results }}"
+    var: "{{ SalesForceBundle }}"
 
 - name: "Wait for test results"
   shell: "uptime"
-  until: phpunit_results.IntegrationBundle is defined
+  until: IntegrationBundle is defined and IntegrationBundle !== ""
   retries: 10
   delay: 10
-
-- name: "Output test results"
-  debug:
-    msg: "testSuite={{ item.testSuite }}, stdout={{ item.stdout }}"
-  with_items: "{{ phpunit_results }}"
