@@ -6,3 +6,11 @@
       msg: "SalesforceBundle: {{ SalesforceBundle | default({}) }}"
   - debug:
       msg: "IntegrationBundle: {{ IntegrationBundle | default({}) }}"
+  - debug:
+      msg: "AppBundle: {{ AppBundle | default({}) }}"
+  - debug:
+      msg: "BusinessBundle: {{ BusinessBundle | default({}) }}"
+  - debug:
+      msg: "CoreBundle: {{ CoreBundle | default({}) }}"
+  - debug:
+      msg: "ModuleBundle: {{ ModuleBundle | default({}) }}"

@@ -1,12 +1,5 @@
 ---
 
-- name: "Output test results"
-  block:
-  - debug:
-      msg: "SalesforceBundle: {{ SalesforceBundle | default({}) }}"
-  - debug:
-      msg: "IntegrationBundle: {{ IntegrationBundle | default({}) }}"
-
 - name: "Wait for SalesforceBundle results"
   debug:
     msg: "{{ SalesforceBundle | default('KO') | regex_search(exp) }}"
@@ -14,7 +7,37 @@
     exp: "OK \\(\\d+ tests, \\d+ assertions\\)"
   register: SalesforceBundleResults
   until: SalesforceBundle is defined
-  retries: 10
+  retries: 15
+  delay: 30
+
+- name: "Wait for CoreBundle results"
+  debug:
+    msg: "{{ CoreBundle | default('KO') | regex_search(exp) }}"
+  vars:
+    exp: "OK \\(\\d+ tests, \\d+ assertions\\)"
+  register: CoreBundleResults
+  until: CoreBundle is defined
+  retries: 15
+  delay: 30
+
+- name: "Wait for BusinessBundle results"
+  debug:
+    msg: "{{ BusinessBundle | default('KO') | regex_search(exp) }}"
+  vars:
+    exp: "OK \\(\\d+ tests, \\d+ assertions\\)"
+  register: BusinessBundleResults
+  until: BusinessBundle is defined
+  retries: 15
+  delay: 30
+
+- name: "Wait for AppBundle results"
+  debug:
+    msg: "{{ AppBundle | default('KO') | regex_search(exp) }}"
+  vars:
+    exp: "OK \\(\\d+ tests, \\d+ assertions\\)"
+  register: AppBundleResults
+  until: AppBundle is defined
+  retries: 15
   delay: 30
 
 - name: "Wait for IntegrationBundle results"
@@ -24,9 +47,30 @@
     exp: "OK \\(\\d+ tests, \\d+ assertions\\)"
   register: IntegrationBundleResults
   until: IntegrationBundle is defined
-  retries: 10
+  retries: 15
+  delay: 30
+
+- name: "Wait for ModuleBundle results"
+  debug:
+    msg: "{{ ModuleBundle | default('KO') | regex_search(exp) }}"
+  vars:
+    exp: "OK \\(\\d+ tests, \\d+ assertions\\)"
+  register: ModuleBundleResults
+  until: ModuleBundle is defined
+  retries: 15
   delay: 30
 
 - name: "Final results"
-  debug:
-    msg: "IntegrationBundleResults: {{ IntegrationBundleResults }} \nSalesforceBundleResults {{ SalesforceBundleResults }}"
+  block:
+  - debug:
+      msg: "SalesforceBundle: {{ SalesforceBundleResults | default('KO') }}"
+  - debug:
+      msg: "IntegrationBundle: {{ IntegrationBundleResults | default('KO') }}"
+  - debug:
+      msg: "AppBundle: {{ AppBundleResults | default('KO') }}"
+  - debug:
+      msg: "BusinessBundle: {{ BusinessBundleResults | default('KO') }}"
+  - debug:
+      msg: "CoreBundle: {{ CoreBundleResults | default('KO') }}"
+  - debug:
+      msg: "ModuleBundle: {{ ModuleBundleResults | default('KO') }}"
