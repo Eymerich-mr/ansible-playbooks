@@ -4,6 +4,12 @@
   debug:
     var: "{{ phpunit_results }}"
 
+- name: "Wait for test results"
+    shell: "uptime"
+    until: phpunit_results.testSuite == 'AppBundle'
+    retries: 10
+    delay: 10
+
 - name: "Output test results"
   debug:
     msg: "testSuite={{ item.testSuite }}, stdout={{ item.stdout }}"
