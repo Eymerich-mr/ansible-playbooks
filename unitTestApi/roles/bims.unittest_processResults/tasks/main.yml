@@ -6,7 +6,7 @@
 
 - name: "Wait for test results"
   shell: "uptime"
-  until: phpunit_results.AppBundle is defined
+  until: phpunit_results.IntegrationBundle is defined
   retries: 10
   delay: 10
 
