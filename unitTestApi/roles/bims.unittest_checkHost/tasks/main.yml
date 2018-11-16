@@ -1,9 +1,5 @@
 ---
 
-- name: "Clean results"
-  set_stats:
-    data:
-      IntegrationBundle: {}
-      CoreBundle: {}
-      SalesForceBundle: {}
-    aggregate: no
+- name: "Output test results"
+  debug:
+    var: "{{ {} | combine(SalesForceBundle,IntegrationBundle) }}"
