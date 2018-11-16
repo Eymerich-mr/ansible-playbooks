@@ -194,6 +194,7 @@
     working_dir: "/var/www/html/app"
     command: "/var/www/html/bin/phpunit --testsuite {{ testSuite }}"
     detach: false
+    auto_remove: yes
     env:
       BIMS_ENV: local
       BIZTALK_HOST: 'http\:\/\/php-mock\/Services\/Sales\/biztalk.php\/'
