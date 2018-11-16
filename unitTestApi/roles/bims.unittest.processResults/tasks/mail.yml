@@ -4,5 +4,5 @@
 
 - name: "Output test results"
   debug:
-    msg: "Server={{ item.Server }}, WAR={{ item.WAR }}"
-      with_items: "{{ phpunit_results }}"
+    msg: "testSuite={{ item.testSuite }}, stdout={{ item.stdout }}"
+  with_items: "{{ phpunit_results }}"
