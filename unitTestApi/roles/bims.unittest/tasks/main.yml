@@ -202,16 +202,12 @@
       aliases:
       - php-fpm
   ignore_errors: yes
-  register: phpunit_results
-
-- name: "Show output"
-  debug:
-    msg: "{{ phpunit_results }}"
+  register: results
 
 - name: "Save results"
   set_stats:
     data:
-      phpunit_results: "{{ phpunit_results }}"
+      phpunit_results: "{{ results.msg }}"
 #  failed_when: "{{ 'OK ' not in phpunit_results.msg | regex_search('OK \(\d+ tests, \d+ assertions\)' | regex_escape()) }}"
 
 #- name: Check status every 30s, up to 900s
