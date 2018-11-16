@@ -6,6 +6,6 @@
 
 - name: "Wait for test results"
   shell: "uptime"
-  until: IntegrationBundle is defined and IntegrationBundle !== ""
+  until: IntegrationBundle is defined and not IntegrationBundle == ""
   retries: 10
   delay: 10
