@@ -1,0 +1,8 @@
+- name: "Output test results"
+  debug:
+    var: "{{ phpunit_results }}"
+
+- name: "Output test results"
+  debug:
+    msg: "Server={{ item.Server }}, WAR={{ item.WAR }}"
+      with_items: "{{ phpunit_results }}"

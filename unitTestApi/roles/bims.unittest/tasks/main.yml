@@ -207,7 +207,7 @@
 - name: "Save results"
   set_stats:
     data:
-      phpunit_results: "{{ results.msg }}"
+      phpunit_results: "{{ {'testSuite':testSuite, 'stdout':results.msg} }}"
 #  failed_when: "{{ 'OK ' not in phpunit_results.msg | regex_search('OK \(\d+ tests, \d+ assertions\)' | regex_escape()) }}"
 
 #- name: Check status every 30s, up to 900s
