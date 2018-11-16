@@ -8,7 +8,7 @@
   register: SalesforceBundleResults
   until: SalesforceBundle is defined
   retries: 15
-  delay: 30
+  delay: 1
 
 - name: "Wait for CoreBundle results"
   debug:
