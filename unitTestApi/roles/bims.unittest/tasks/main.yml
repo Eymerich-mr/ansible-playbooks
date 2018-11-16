@@ -1,3 +1,5 @@
+---
+
 - name: "Create network {{ slotname }}"
   docker_network:
     name: "{{ slotname }}"

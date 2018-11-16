@@ -1,3 +1,5 @@
+---
+
 - name: "Output test results"
   debug:
     var: "{{ phpunit_results }}"
