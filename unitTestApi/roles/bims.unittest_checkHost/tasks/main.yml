@@ -1,1 +1,7 @@
 ---
+
+- name: "Clean results"
+  set_stats:
+    data:
+      phpunit_results: "{{ {} }}"
+    aggregate: no
