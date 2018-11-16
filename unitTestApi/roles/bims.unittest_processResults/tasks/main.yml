@@ -2,10 +2,10 @@
 
 - name: "Output test results"
   debug:
-    var: "{{ SalesForceBundle }}"
+    var: "{{ {} | combine(SalesForceBundle,IntegrationBundle) }}"
 
 - name: "Wait for test results"
   shell: "uptime"
-  until: IntegrationBundle is defined and not IntegrationBundle == ""
+  until: IntegrationBundle is defined and SalesForcebundle is defined
   retries: 10
   delay: 10
