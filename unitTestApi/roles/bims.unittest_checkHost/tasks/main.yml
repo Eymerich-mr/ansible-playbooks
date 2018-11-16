@@ -3,7 +3,7 @@
 - name: "Clean results"
   set_stats:
     data:
-      IntegrationBundle: ""
-      CoreBundle: ""
-      SalesForceBundle: ""
+      IntegrationBundle: {}
+      CoreBundle: {}
+      SalesForceBundle: {}
     aggregate: no
