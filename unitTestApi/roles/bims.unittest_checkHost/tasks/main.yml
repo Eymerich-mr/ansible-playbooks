@@ -1,5 +1,8 @@
 ---
 
 - name: "Output test results"
-  debug:
-    var: "{{ SalesForceBundle | default({}) | combine(IntegrationBundle) }}"
+  block:
+  - debug:
+      msg: "SalesForceBundle: {{ SalesForceBundle }}"
+  - debug:
+      msg: "IntegrationBundle: {{ IntegrationBundle }}"
