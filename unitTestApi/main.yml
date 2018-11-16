@@ -7,6 +7,6 @@
   - bundle: "src/BCA/IntegrationBundle"
   - testSuite: "AppBundle,BusinessBundle,CoreBundle,IntegrationBundle,ModuleBundle,SalesforceBundle"
   roles:
-  - { role: bims.unittest.checkHost, when: checkHost == "yes" }
-  - { role: bims.unittest, when: execute == "yes" }
+  - { role: bims.unittest.checkHost, when: checkHost is defined and checkHost == "yes" }
+  - { role: bims.unittest, when: execute is defined and execute == "yes" }
   - { role: bims.unittest.processResults, when: "phpunit_results is defined" }
