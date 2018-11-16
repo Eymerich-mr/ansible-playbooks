@@ -7,11 +7,26 @@
   - debug:
       msg: "IntegrationBundle: {{ IntegrationBundle | default({}) }}"
 
-- name: "Wait for test results"
+- name: "Wait for SalesforceBundle results"
   debug:
     msg: "{{ SalesforceBundle | default('KO') | regex_search(exp) }}"
   vars:
     exp: "OK \\(\\d+ tests, \\d+ assertions\\)"
-  until: IntegrationBundle is defined and SalesforceBundle is defined
+  register: SalesforceBundleResults
+  until: SalesforceBundle is defined
   retries: 10
-  delay: 10
+  delay: 30
+
+- name: "Wait for IntegrationBundle results"
+  debug:
+    msg: "{{ IntegrationBundle | default('KO') | regex_search(exp) }}"
+  vars:
+    exp: "OK \\(\\d+ tests, \\d+ assertions\\)"
+  register: IntegrationBundleResults
+  until: IntegrationBundle is defined
+  retries: 10
+  delay: 30
+
+- name: "Final results"
+  debug:
+    msg: "IntegrationBundleResults: {{ IntegrationBundleResults }} \nSalesforceBundleResults {{ SalesforceBundleResults }}"
