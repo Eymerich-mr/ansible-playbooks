@@ -210,7 +210,7 @@
 
 - name: "Save results"
   set_stats:
-    data: "{{ {testSuite:results.msg} }}"
+    data: "{{ {slotname:results.msg} }}"
     aggregate: no
 #  failed_when: "{{ 'OK ' not in phpunit_results.msg | regex_search('OK \(\d+ tests, \d+ assertions\)' | regex_escape()) }}"
 
