@@ -206,7 +206,7 @@
 
 - name: "Show output"
   debug:
-    msg: {{ phpunit_results }}
+    msg: "{{ phpunit_results }}"
 
 - name: "Save results"
   set_stats:
