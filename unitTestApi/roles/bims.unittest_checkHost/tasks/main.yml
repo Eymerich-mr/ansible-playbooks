@@ -3,6 +3,6 @@
 - name: "Output test results"
   block:
   - debug:
-      msg: "SalesForceBundle: {{ SalesForceBundle | default({}) }}"
+      msg: "SalesforceBundle: {{ SalesforceBundle | default({}) }}"
   - debug:
       msg: "IntegrationBundle: {{ IntegrationBundle | default({}) }}"

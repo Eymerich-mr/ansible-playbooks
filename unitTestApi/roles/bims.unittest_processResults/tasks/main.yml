@@ -3,15 +3,15 @@
 - name: "Output test results"
   block:
   - debug:
-      msg: "SalesForceBundle: {{ SalesForceBundle | default({}) }}"
+      msg: "SalesforceBundle: {{ SalesforceBundle | default({}) }}"
   - debug:
       msg: "IntegrationBundle: {{ IntegrationBundle | default({}) }}"
 
 - name: "Wait for test results"
   debug:
-    msg: "{{ SalesForceBundle | regex_search(exp) }}"
+    msg: "{{ SalesforceBundle | default('KO') | regex_search(exp) }}"
   vars:
     exp: "OK \\(\\d+ tests, \\d+ assertions\\)"
-  until: IntegrationBundle is defined and SalesForcebundle is defined
+  until: IntegrationBundle is defined and SalesforceBundle is defined
   retries: 10
   delay: 10
