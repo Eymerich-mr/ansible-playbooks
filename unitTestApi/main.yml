@@ -9,4 +9,4 @@
   roles:
   - { role: bims.unittest.checkHost, when: "check is defined" }
   - { role: bims.unittest, when: "execute is defined" }
-  - { role: bims.unittest.processResult, when: "phpunit_results is defined" }
+  - { role: bims.unittest.processResults, when: "phpunit_results is defined" }
