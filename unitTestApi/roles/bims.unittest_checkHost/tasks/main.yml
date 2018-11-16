@@ -2,4 +2,4 @@
 
 - name: "Output test results"
   debug:
-    var: "{{ {} | combine(SalesForceBundle,IntegrationBundle) }}"
+    var: "{{ default({}) | combine(SalesForceBundle,IntegrationBundle) }}"
