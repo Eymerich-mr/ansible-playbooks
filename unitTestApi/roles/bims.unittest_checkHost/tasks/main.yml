@@ -33,3 +33,7 @@
 - name: Show test output
   debug:
     msg: "{{ redis_container_output.ansible_facts.docker_container.Output }}"
+
+- name: Show test output
+  debug:
+    msg: "{{ tower_job_template_name tower_job_id tower_job_template_id tower_job_launch_type}}"
