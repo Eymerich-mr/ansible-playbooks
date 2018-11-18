@@ -1,76 +1,62 @@
 ---
 
-- name: "Wait for SalesforceBundle results"
-  debug:
-    msg: "{{ SalesforceBundle | default('KO') | regex_search(exp) }}"
-  vars:
-    exp: "OK \\(\\d+ tests, \\d+ assertions\\)"
-  register: SalesforceBundleResults
-  until: SalesforceBundle is defined
+- name: "Wait for {{ item }} slot"
+  docker_container:
+    name: "phpunit-cache"
+    image: redis:32bit
+    detach: no
+    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning GET {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ item }}"
+  register: "redis_container_{{ item }}"
+  until: "redis_container_{{ item }}.ansible_facts.docker_container.Output is defined"
   retries: 15
   delay: 1
+  loop:
+  - app
 
-- name: "Wait for CoreBundle results"
-  debug:
-    msg: "{{ CoreBundle | default('KO') | regex_search(exp) }}"
-  vars:
-    exp: "OK \\(\\d+ tests, \\d+ assertions\\)"
-  register: CoreBundleResults
-  until: CoreBundle is defined
+- name: "Wait for {{ item }} slot"
+  docker_container:
+    name: "phpunit-cache"
+    image: redis:32bit
+    detach: no
+    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning GET {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ item }}"
+  register: "redis_container_{{ item }}"
+  until: "redis_container_{{ item }}.ansible_facts.docker_container.Output is defined"
   retries: 15
-  delay: 30
+  delay: 1
+  loop:
+  - module
 
-- name: "Wait for BusinessBundle results"
-  debug:
-    msg: "{{ BusinessBundle | default('KO') | regex_search(exp) }}"
-  vars:
-    exp: "OK \\(\\d+ tests, \\d+ assertions\\)"
-  register: BusinessBundleResults
-  until: BusinessBundle is defined
+- name: "Wait for {{ item }} slot"
+  docker_container:
+    name: "phpunit-cache"
+    image: redis:32bit
+    detach: no
+    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning GET {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ item }}"
+  register: "redis_container_{{ item }}"
+  until: "redis_container_{{ item }}.ansible_facts.docker_container.Output is defined"
   retries: 15
-  delay: 30
+  delay: 1
+  loop:
+  - appController
 
-- name: "Wait for AppBundle results"
-  debug:
-    msg: "{{ AppBundle | default('KO') | regex_search(exp) }}"
-  vars:
-    exp: "OK \\(\\d+ tests, \\d+ assertions\\)"
-  register: AppBundleResults
-  until: AppBundle is defined
+- name: "Wait for {{ item }} slot"
+  docker_container:
+    name: "phpunit-cache"
+    image: redis:32bit
+    detach: no
+    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning GET {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ item }}"
+  register: "redis_container_{{ item }}"
+  until: "redis_container_{{ item }}.ansible_facts.docker_container.Output is defined"
   retries: 15
-  delay: 30
-
-- name: "Wait for IntegrationBundle results"
-  debug:
-    msg: "{{ IntegrationBundle | default('KO') | regex_search(exp) }}"
-  vars:
-    exp: "OK \\(\\d+ tests, \\d+ assertions\\)"
-  register: IntegrationBundleResults
-  until: IntegrationBundle is defined
-  retries: 15
-  delay: 30
-
-- name: "Wait for ModuleBundle results"
-  debug:
-    msg: "{{ ModuleBundle | default('KO') | regex_search(exp) }}"
-  vars:
-    exp: "OK \\(\\d+ tests, \\d+ assertions\\)"
-  register: ModuleBundleResults
-  until: ModuleBundle is defined
-  retries: 15
-  delay: 30
+  delay: 1
+  loop:
+  - integration
 
 - name: "Final results"
-  block:
-  - debug:
-      msg: "SalesforceBundle: {{ SalesforceBundleResults | default('KO') }}"
-  - debug:
-      msg: "IntegrationBundle: {{ IntegrationBundleResults | default('KO') }}"
-  - debug:
-      msg: "AppBundle: {{ AppBundleResults | default('KO') }}"
-  - debug:
-      msg: "BusinessBundle: {{ BusinessBundleResults | default('KO') }}"
-  - debug:
-      msg: "CoreBundle: {{ CoreBundleResults | default('KO') }}"
-  - debug:
-      msg: "ModuleBundle: {{ ModuleBundleResults | default('KO') }}"
+  debug:
+    msg: "{{ item }}: {{ redis_container_{{ item }}.ansible_facts.docker_container.Output | default('KO') }}"
+  loop:
+  - app
+  - module
+  - appController
+  - integration
