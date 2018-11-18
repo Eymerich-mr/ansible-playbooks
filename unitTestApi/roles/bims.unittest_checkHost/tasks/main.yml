@@ -19,7 +19,7 @@
   docker_container:
       name: "phpunit-cache"
       image: redis:32bit
-      command: "{{ redis-cli -h redisHost -p redisPort -a redisPass SET testData testValue EX 3600 }}"
+      command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} SET testData testValue EX 3600"
 
 - name: "Read value from redis"
   docker_container:
