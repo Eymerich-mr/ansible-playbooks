@@ -1,19 +1,19 @@
 ---
 
-- name: "Output test results"
-  block:
-  - debug:
-      msg: "SalesforceBundle: {{ SalesforceBundle | default({}) }}"
-  - debug:
-      msg: "IntegrationBundle: {{ IntegrationBundle | default({}) }}"
-  - debug:
-      msg: "AppBundle: {{ AppBundle | default({}) }}"
-  - debug:
-      msg: "BusinessBundle: {{ BusinessBundle | default({}) }}"
-  - debug:
-      msg: "CoreBundle: {{ CoreBundle | default({}) }}"
-  - debug:
-      msg: "ModuleBundle: {{ ModuleBundle | default({}) }}"
+#- name: "Output test results"
+#  block:
+#  - debug:
+#      msg: "SalesforceBundle: {{ SalesforceBundle | default({}) }}"
+#  - debug:
+#      msg: "IntegrationBundle: {{ IntegrationBundle | default({}) }}"
+#  - debug:
+#      msg: "AppBundle: {{ AppBundle | default({}) }}"
+#  - debug:
+#      msg: "BusinessBundle: {{ BusinessBundle | default({}) }}"
+#  - debug:
+#      msg: "CoreBundle: {{ CoreBundle | default({}) }}"
+#  - debug:
+#      msg: "ModuleBundle: {{ ModuleBundle | default({}) }}"
 
 - name: "Insert value in redis"
   docker_container:
@@ -25,7 +25,7 @@
   docker_container:
       name: "phpunit-cache"
       image: redis:32bit
-      command: "{{ redis-cli -h redisHost -p redisPort -a redisPass GET testData }}"
+      command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} GET testData#"
 
 - name: "query redis for list of keys and non-default host and port"
   debug:
