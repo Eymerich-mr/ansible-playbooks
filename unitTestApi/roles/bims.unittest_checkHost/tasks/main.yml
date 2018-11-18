@@ -17,16 +17,18 @@
 
 - name: "Insert value in redis"
   docker_container:
-      name: "phpunit-cache"
-      image: redis:32bit
-      command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} SET testData testValue EX 3600"
+    name: "phpunit-cache"
+    image: redis:32bit
+    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} SET testData testValue EX 3600"
 
 - name: "Read value from redis"
   docker_container:
-      name: "phpunit-cache"
-      image: redis:32bit
-      command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} GET testData"
+    name: "phpunit-cache"
+    image: redis:32bit
+    detach: no
+    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} GET testData"
+  register: redis_container_output
 
-- name: "query redis for list of keys and non-default host and port"
+- name: Show test output
   debug:
-    msg: "{{ lookup('redis', 'testData', host='redisHost', port=redisPort) }}"
+    msg: "{{ redis_container_output.ansible_facts.docker_container.Output }}"
