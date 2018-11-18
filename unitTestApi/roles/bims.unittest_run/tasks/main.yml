@@ -214,6 +214,12 @@
     aggregate: no
 #  failed_when: "{{ 'OK ' not in phpunit_results.msg | regex_search('OK \(\d+ tests, \d+ assertions\)' | regex_escape()) }}"
 
+- name: "Insert value in redis"
+  docker_container:
+    name: "phpunit-cache"
+    image: redis:32bit
+    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} SET {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ slotname }} {{ results.msg }} EX 3600"
+
 #- name: Check status every 30s, up to 900s
 #  async_status:
 #    jid: "{{ async_results.ansible_job_id }}"
