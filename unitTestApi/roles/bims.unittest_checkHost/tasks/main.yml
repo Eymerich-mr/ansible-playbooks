@@ -36,18 +36,6 @@
 
 - name: Show test output
   debug:
-    msg: "{{ awx_job_template_name }}"
-- name: Show test output
-  debug:
-    msg: "{{ awx_job_id }}"
-- name: Show test output
-  debug:
-    msg: "{{ awx_job_template_id }}"
-- name: Show test output
-  debug:
-    msg: "{{ awx_job_launch_type }}"
-- name: Show test output
-  debug:
     msg: "{{ awx_workflow_job_id | default('kk') }}"
 - name: Show test output
   debug:

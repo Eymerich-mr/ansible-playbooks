@@ -5,6 +5,7 @@
     name: "phpunit-cache"
     image: redis:32bit
     detach: no
+    cleanup: yes
     command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning EXISTS {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ item }}"
   register: "redis_container_tmp"
   until: "redis_container_tmp.ansible_facts.docker_container.Output == 1"
@@ -18,6 +19,7 @@
     name: "phpunit-cache"
     image: redis:32bit
     detach: no
+    cleanup: yes
     command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning EXISTS {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ item }}"
   register: "redis_container_tmp"
   until: "redis_container_tmp.ansible_facts.docker_container.Output == 1"
@@ -31,6 +33,7 @@
     name: "phpunit-cache"
     image: redis:32bit
     detach: no
+    cleanup: yes
     command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning EXISTS {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ item }}"
   register: "redis_container_tmp"
   until: "redis_container_tmp.ansible_facts.docker_container.Output == 1"
@@ -44,6 +47,7 @@
     name: "phpunit-cache"
     image: redis:32bit
     detach: no
+    cleanup: yes
     command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning EXISTS {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ item }}"
   register: "redis_container_tmp"
   until: "redis_container_tmp.ansible_facts.docker_container.Output == 1"
@@ -57,6 +61,7 @@
     name: "phpunit-cache"
     image: redis:32bit
     detach: no
+    cleanup: yes
     command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning GET {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ item }}"
   register: "redis_container_{{ item }}"
   loop:
