@@ -10,7 +10,7 @@
   register: "redis_container_tmp"
   until: "redis_container_tmp.ansible_facts.docker_container.Output == '1\n'"
   retries: 15
-  delay: 1
+  delay: 30
   loop:
   - app
 
@@ -24,7 +24,7 @@
   register: "redis_container_tmp"
   until: "redis_container_tmp.ansible_facts.docker_container.Output == '1\n'"
   retries: 15
-  delay: 1
+  delay: 30
   loop:
   - module
 
@@ -38,7 +38,7 @@
   register: "redis_container_tmp"
   until: "redis_container_tmp.ansible_facts.docker_container.Output == '1\n'"
   retries: 15
-  delay: 1
+  delay: 30
   loop:
   - appController
 
@@ -52,7 +52,7 @@
   register: "redis_container_tmp"
   until: "redis_container_tmp.ansible_facts.docker_container.Output == '1\n'"
   retries: 15
-  delay: 1
+  delay: 30
   loop:
   - integration
 
