@@ -218,7 +218,8 @@
   docker_container:
     name: "phpunit-cache"
     image: redis:32bit
-    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} SET {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ slotname }} {{ results.msg | regex_search(exp) }} EX 3600"#
+    detach: no
+    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} SET {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ slotname }} '{{ results.msg | regex_search(exp) }}' EX 3600"#
   vars:
     exp: "OK \\(\\d+ tests, \\d+ assertions\\)"
 
