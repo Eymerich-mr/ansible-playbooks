@@ -72,9 +72,10 @@
 
 - name: "Final results"
   debug:
-    msg: "{{ item }}: {{ lookup('vars',val).ansible_facts.docker_container.Output | default('KO') }}"
+    msg: "{{ item }}: {{ lookup('vars',val).ansible_facts.docker_container.Output | regex_search(exp) | default('KO') }}"
   vars:
     val: "redis_container_{{ item }}"
+    exp: "OK \\(\\d+ tests, \\d+ assertions\\)"
   loop:
   - app
   - module

@@ -79,19 +79,13 @@
 - name: "Get mysql IP address"
   command: "docker inspect --format '{''{ .NetworkSettings.IPAddress }''}' {{ slotname }}_activiti-database"
   register: mysql_ip_address
+  changed_when: false
 
 - name: "Wait for mysql database"
   wait_for:
     host: "{{ mysql_ip_address.stdout }}"
     port: 3306
     search_regex: "mysql_native_password"
-
-#- name: Wait untils Jenkins web API is available
-#  shell: curl --head --silent http://localhost:8080/cli/
-#  register: result
-#  until: result.stdout.find("200 OK") != -1
-#  retries: 12
-#  delay: 5
 
 - name: "Start activiti, connect to network {{ slotname }}"
   docker_container:
@@ -109,27 +103,12 @@
 - name: "Get mongo IP address"
   command: "docker inspect --format '{''{ .NetworkSettings.IPAddress }''}' {{ slotname }}_mongo"
   register: mongo_ip_address
+  changed_when: false
 
 - name: "Wait for mongo database"
   wait_for:
     host: "{{ mongo_ip_address.stdout }}"
     port: 27017
-
-#- name: "Start php-fpm, connect to network {{ slotname }}"
-#  docker_container:
-#    name: "{{ slotname }}_php-fpm"
-#    state: stopped
-#    image: 042475824269.dkr.ecr.eu-west-1.amazonaws.com/bims_api:pr
-#    pull: yes
-#    env:
-#      BIMS_ENV: local
-#      BIZTALK_HOST: 'http\:\/\/php-mock\/Services\/Sales\/biztalk.php\/'
-#      AWS_ACCESS_KEY_ID: "dummy"
-#      AWS_SECRET_ACCESS_KEY: "dummy"
-#    networks:
-#    - name: "{{ slotname }}"
-#      aliases:
-#      - php-fpm
 
 - name: "Start api-micro, connect to network {{ slotname }}"
   docker_container:
@@ -208,26 +187,10 @@
   ignore_errors: yes
   register: results
 
-#- name: "Save results"
-#  set_stats:
-#    data: "{{ {slotname:results.msg} }}"
-#    aggregate: no
-#  failed_when: "{{ 'OK ' not in phpunit_results.msg | regex_search('OK \(\d+ tests, \d+ assertions\)' | regex_escape()) }}"
-
 - name: "Insert value in redis"
   docker_container:
     name: "phpunit-cache"
     image: redis:32bit
     detach: no
     cleanup: yes
-    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning SET {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ slotname }} '{{ results.msg | regex_search(exp) }}' EX 3600"#
-  vars:
-    exp: "OK \\(\\d+ tests, \\d+ assertions\\)"
-
-#- name: Check status every 30s, up to 900s
-#  async_status:
-#    jid: "{{ async_results.ansible_job_id }}"
-#  register: async_poll_results
-#  until: async_results.stdout
-#  retries: 30
-#  delay: 30
+    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning SET {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ slotname }} '{{ results.msg }}' EX 3600"
