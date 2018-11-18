@@ -77,7 +77,8 @@
 
 - name: "Final results"
   debug:
-    msg: "{{ item.item }}: {{ item.ansible_facts.docker_container.Output | regex_search(exp) | default('KO') }}"
+    #msg: "{{ item.item }}: {{ item.ansible_facts.docker_container.Output | regex_search(exp) | default('KO') }}"
+    msg: "{{ item }}"
   vars:
     exp: "OK \\(\\d+ tests, \\d+ assertions\\)"
   with_items: "redis_container_final.results"
