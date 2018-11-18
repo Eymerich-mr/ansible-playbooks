@@ -5,9 +5,9 @@
     name: "phpunit-cache"
     image: redis:32bit
     detach: no
-    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning GET {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ item }}"
-  register: "redis_container_{{ item }}"
-  until: "redis_container_app.ansible_facts.docker_container.Output is defined"
+    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning EXISTS {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ item }}"
+  register: "redis_container_tmp"
+  until: "redis_container_tmp.ansible_facts.docker_container.Output == 1"
   retries: 15
   delay: 1
   loop:
@@ -18,9 +18,9 @@
     name: "phpunit-cache"
     image: redis:32bit
     detach: no
-    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning GET {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ item }}"
-  register: "redis_container_{{ item }}"
-  until: "redis_container_module.ansible_facts.docker_container.Output is defined"
+    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning EXISTS {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ item }}"
+  register: "redis_container_tmp"
+  until: "redis_container_tmp.ansible_facts.docker_container.Output == 1"
   retries: 15
   delay: 1
   loop:
@@ -31,9 +31,9 @@
     name: "phpunit-cache"
     image: redis:32bit
     detach: no
-    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning GET {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ item }}"
-  register: "redis_container_{{ item }}"
-  until: "redis_container_appController.ansible_facts.docker_container.Output is defined"
+    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning EXISTS {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ item }}"
+  register: "redis_container_tmp"
+  until: "redis_container_tmp.ansible_facts.docker_container.Output == 1"
   retries: 15
   delay: 1
   loop:
@@ -44,19 +44,32 @@
     name: "phpunit-cache"
     image: redis:32bit
     detach: no
-    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning GET {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ item }}"
-  register: "redis_container_{{ item }}"
-  until: "redis_container_integration.ansible_facts.docker_container.Output is defined"
+    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning EXISTS {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ item }}"
+  register: "redis_container_tmp"
+  until: "redis_container_tmp.ansible_facts.docker_container.Output == 1"
   retries: 15
   delay: 1
   loop:
   - integration
 
+- name: "Calculate final results"
+  docker_container:
+    name: "phpunit-cache"
+    image: redis:32bit
+    detach: no
+    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning GET {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ item }}"
+  register: "redis_container_{{ item }}"
+  loop:
+  - app
+  - module
+  - appController
+  - integration
+
 - name: "Final results"
   debug:
-    msg: "{{ item }}: {{ lookup('vars',val) | default('KO') }}"
+    msg: "{{ item }}: {{ lookup('vars',val).ansible_facts.docker_container.Output | default('KO') }}"
   vars:
-    val: "redis_container_{{ item }}.ansible_facts.docker_container.Output"
+    val: "redis_container_{{ item }}"
   loop:
   - app
   - module
