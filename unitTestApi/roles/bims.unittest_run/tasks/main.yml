@@ -150,6 +150,7 @@
 - name: "Get activiti IP address"
   command: "docker inspect --format '{''{ .NetworkSettings.IPAddress }''}' {{ slotname }}_activiti"
   register: activiti_ip_address
+  changed_when: false
 
 - name: "Wait for activiti"
   wait_for:

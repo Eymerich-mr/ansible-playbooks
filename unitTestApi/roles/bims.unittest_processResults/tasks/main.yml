@@ -11,6 +11,7 @@
   until: "redis_container_tmp.ansible_facts.docker_container.Output == '1\n'"
   retries: 15
   delay: 30
+  changed_when: false
   loop:
   - app
 
@@ -25,6 +26,7 @@
   until: "redis_container_tmp.ansible_facts.docker_container.Output == '1\n'"
   retries: 15
   delay: 30
+  changed_when: false
   loop:
   - module
 
@@ -39,6 +41,7 @@
   until: "redis_container_tmp.ansible_facts.docker_container.Output == '1\n'"
   retries: 15
   delay: 30
+  changed_when: false
   loop:
   - appController
 
@@ -53,6 +56,7 @@
   until: "redis_container_tmp.ansible_facts.docker_container.Output == '1\n'"
   retries: 15
   delay: 30
+  changed_when: false
   loop:
   - integration
 
@@ -63,7 +67,8 @@
     detach: no
     cleanup: yes
     command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning GET {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ item }}"
-  register: "redis_container_{{ item }}"
+  register: "redis_container_final"
+  changed_when: false
   loop:
   - app
   - module
@@ -72,12 +77,7 @@
 
 - name: "Final results"
   debug:
-    msg: "{{ item }}: {{ lookup('vars',val).ansible_facts.docker_container.Output | regex_search(exp) | default('KO') }}"
+    msg: "{{ item.item }}: {{ item.ansible_facts.docker_container.Output | regex_search(exp) | default('KO') }}"
   vars:
-    val: "redis_container_{{ item }}"
     exp: "OK \\(\\d+ tests, \\d+ assertions\\)"
-  loop:
-  - app
-  - module
-  - appController
-  - integration
+  with_items: "redis_container_final.results"
