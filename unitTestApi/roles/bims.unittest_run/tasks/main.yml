@@ -189,7 +189,7 @@
 - name: "Start php-fpm, connect to network {{ slotname }}"
   docker_container:
     name: "{{ slotname }}_php-fpm"
-    image: 042475824269.dkr.ecr.eu-west-1.amazonaws.com/bims_api:pr
+    image: "{{ phpImage }}"
     pull: yes
     working_dir: "/var/www/html/app"
     command: "/var/www/html/bin/phpunit --testsuite {{ testSuite }}"
