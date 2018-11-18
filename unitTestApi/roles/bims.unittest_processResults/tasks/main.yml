@@ -77,7 +77,7 @@
 
 - name: Show debug
   debug:
-    msg: "{{ redis_container_final }}"
+    msg: "{{ redis_container_final.msg }}"
 
 - name: "Final results"
   debug:
