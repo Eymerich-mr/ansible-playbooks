@@ -69,7 +69,7 @@
     command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning GET {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ item }}"
   register: redis_container_final
   #changed_when: false
-  with_items:
+  loop:
   - app
   - module
   - appController
@@ -85,4 +85,4 @@
     msg: "{{ item }}"
   vars:
     exp: "OK \\(\\d+ tests, \\d+ assertions\\)"
-  with_items: redis_container_final.results
+  loop: "{{ redis_container_final.results }}"
