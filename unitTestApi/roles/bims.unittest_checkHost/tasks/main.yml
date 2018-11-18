@@ -32,3 +32,7 @@
 - name: Show test output
   debug:
     msg: "{{ redis_container_output.ansible_facts.docker_container.Output }}"
+
+- name: Show test output
+  debug:
+    msg: "{{ redis_container_output }}"
