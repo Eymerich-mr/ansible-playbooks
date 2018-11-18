@@ -36,19 +36,19 @@
 
 - name: Show test output
   debug:
-    msg: "{{ tower_job_template_name }}"
+    msg: "{{ awx_job_template_name }}"
 - name: Show test output
   debug:
-    msg: "{{ tower_job_id }}"
+    msg: "{{ awx_job_id }}"
 - name: Show test output
   debug:
-    msg: "{{ tower_job_template_id }}"
+    msg: "{{ awx_job_template_id }}"
 - name: Show test output
   debug:
-    msg: "{{ tower_job_launch_type }}"
+    msg: "{{ awx_job_launch_type }}"
 - name: Show test output
   debug:
-    msg: "{{ tower_workflow_job_id }}"
+    msg: "{{ awx_workflow_job_id | default('kk') }}"
 - name: Show test output
   debug:
-    msg: "{{ tower_workflow_job_name }}"
+    msg: "{{ awx_workflow_job_name | default('kk') }}"
