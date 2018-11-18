@@ -68,7 +68,7 @@
     cleanup: yes
     command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning GET {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ item }}"
   register: redis_container_final
-  #changed_when: false
+  changed_when: false
   loop:
   - app
   - module
@@ -81,8 +81,7 @@
 
 - name: "Final results"
   debug:
-    #msg: "{{ item.item }}: {{ item.ansible_facts.docker_container.Output | regex_search(exp) | default('KO') }}"
-    msg: "{{ item }}"
+    msg: "{{ item.item }}: {{ item.ansible_facts.docker_container.Output | regex_search(exp) | default('KO') }}"
   vars:
     exp: "OK \\(\\d+ tests, \\d+ assertions\\)"
   loop: "{{ redis_container_final.results }}"
