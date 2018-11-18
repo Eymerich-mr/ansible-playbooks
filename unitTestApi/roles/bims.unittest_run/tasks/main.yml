@@ -189,8 +189,7 @@
 
 - name: "Insert value in redis"
   docker_container:
-    name: "phpunit-cache"
+    name: "phpunit-cache-insert"
     image: redis:32bit
     detach: no
-    cleanup: yes
     command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning SET {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ slotname }} '{{ results.msg }}' EX 3600"
