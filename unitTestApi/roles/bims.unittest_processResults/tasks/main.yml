@@ -81,7 +81,7 @@
 
 - name: "Final results"
   debug:
-    msg: "{{ item.item }}: {{ item.ansible_facts.docker_container.Output | regex_search(exp) | default('KO') }}"
+    msg: "{{ item.item }}: {{ item.ansible_facts.docker_container.Output | regex_search(exp) }}"
   vars:
     exp: "OK \\(\\d+ tests, \\d+ assertions\\)"
   register: "redis_container_final_formatted"
@@ -90,5 +90,5 @@
 - name: "Check final results"
   fail:
     msg: "{{ item.msg }}"
-  when: item.msg is match("KO")
+  when: item.msg is empty
   loop: "{{ redis_container_final_formatted.results }}"
