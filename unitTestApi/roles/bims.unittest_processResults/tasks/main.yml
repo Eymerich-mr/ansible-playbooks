@@ -90,5 +90,5 @@
 - name: "Check final results"
   fail:
     msg: "{{ item.msg }}"
-  when: item.msg is empty
+  when: item.msg == ""
   loop: "{{ redis_container_final_formatted.results }}"
