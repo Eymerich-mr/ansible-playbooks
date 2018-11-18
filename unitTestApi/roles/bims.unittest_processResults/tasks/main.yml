@@ -68,12 +68,16 @@
     cleanup: yes
     command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning GET {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ item }}"
   register: redis_container_final
-  changed_when: false
+  #changed_when: false
   with_items:
   - app
   - module
   - appController
   - integration
+
+- name: Show debug
+  debug:
+    msg: "{{ redis_container_final }}"
 
 - name: "Final results"
   debug:
