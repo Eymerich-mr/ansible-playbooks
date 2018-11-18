@@ -5,7 +5,7 @@
   vars:
   - slotname: "ut1"
   - bundle: "src/BCA/IntegrationBundle"
-  - testSuite: "AppBundle,BusinessBundle,CoreBundle,IntegrationBundle,ModuleBundle,SalesforceBundle"
+  - testSuite: "AppBundle,BusinessBundle,CoreBundle,IntegrationBundle,ModuleBundle,SalesforceBundle,AppBundle-Controller,DataBundle"
   - phpImage: "042475824269.dkr.ecr.eu-west-1.amazonaws.com/bims_api:prtest"
   roles:
   - { role: bims.unittest_checkHost, when: checkHost is defined and checkHost}
