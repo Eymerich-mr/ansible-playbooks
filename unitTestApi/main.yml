@@ -7,6 +7,9 @@
   - bundle: "src/BCA/IntegrationBundle"
   - testSuite: "AppBundle,BusinessBundle,CoreBundle,IntegrationBundle,ModuleBundle,SalesforceBundle,AppBundle-Controller,DataBundle"
   - phpImage: "042475824269.dkr.ecr.eu-west-1.amazonaws.com/bims_api:prtest"
+  - redisHost: "redis-19834.c6.eu-west-1-1.ec2.cloud.redislabs.com"
+  - redisPort: "19834"
+  - redisPass: "Temporal01!"
   roles:
   - { role: bims.unittest_checkHost, when: checkHost is defined and checkHost}
   - { role: bims.unittest_run, when: execute is defined and execute}

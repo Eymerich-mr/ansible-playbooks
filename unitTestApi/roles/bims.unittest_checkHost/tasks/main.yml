@@ -14,3 +14,19 @@
       msg: "CoreBundle: {{ CoreBundle | default({}) }}"
   - debug:
       msg: "ModuleBundle: {{ ModuleBundle | default({}) }}"
+
+- name: "Insert value in redis"
+  docker_container:
+      name: "phpunit-cache"
+      image: redis:32bit
+      command: "{{ redis-cli -h redisHost -p redisPort -a redisPass SET testData testValue EX 3600 }}"
+
+- name: "Read value from redis"
+  docker_container:
+      name: "phpunit-cache"
+      image: redis:32bit
+      command: "{{ redis-cli -h redisHost -p redisPort -a redisPass GET testData }}"
+
+- name: "query redis for list of keys and non-default host and port"
+  debug:
+    msg: "{{ lookup('redis', 'testData', host='redisHost', port=redisPort) }}"
