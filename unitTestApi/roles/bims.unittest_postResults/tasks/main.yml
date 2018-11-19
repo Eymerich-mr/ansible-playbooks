@@ -2,15 +2,15 @@
 
 - name: "Fail if PULL_REQUEST_ID is not defined"
   fail:
-  when: "{{ PULL_REQUEST_ID }} is not defined"
+  when: "PULL_REQUEST_ID is not defined"
 
 - name: "Fail if PULL_REQUEST_FROM_REPO_SLUG is not defined"
   fail:
-  when: "{{ PULL_REQUEST_FROM_REPO_SLUG }} is not defined"
+  when: "PULL_REQUEST_FROM_REPO_SLUG is not defined"
 
 - name: "Fail if PULL_REQUEST_FROM_REPO_PROJECT_KEY is not defined"
   fail:
-  when: "{{ PULL_REQUEST_FROM_REPO_PROJECT_KEY }} is not defined"
+  when: "PULL_REQUEST_FROM_REPO_PROJECT_KEY is not defined"
 
 - name: "Notify bitbucket instance"
   uri:
