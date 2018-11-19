@@ -1,0 +1,24 @@
+---
+
+- name: "Fail if PULL_REQUEST_ID is not defined"
+  fail:
+  when: "{{ PULL_REQUEST_ID }} is not defined"
+
+- name: "Fail if PULL_REQUEST_FROM_REPO_SLUG is not defined"
+  fail:
+  when: "{{ PULL_REQUEST_FROM_REPO_SLUG }} is not defined"
+
+- name: "Fail if PULL_REQUEST_FROM_REPO_PROJECT_KEY is not defined"
+  fail:
+  when: "{{ PULL_REQUEST_FROM_REPO_PROJECT_KEY }} is not defined"
+
+- name: "Notify bitbucket instance"
+  uri:
+    url: "http://10.125.88.140:7991/rest/api/latest/projects/{{ PULL_REQUEST_FROM_REPO_PROJECT_KEY }}/repos/{{ PULL_REQUEST_FROM_REPO_SLUG }}/pull-requests/{{ PULL_REQUEST_ID }}/comments?diffType=EFFECTIVE&avatarSize=64&markup=true"
+    method: POST
+    body: "{'text':'test comment','avatarSize':'64'}"
+    body_format: json
+    user: "jenkins"
+    password: "aa87597b26adceff4d97d5cfa257c10b"
+    force_basic_auth: yes
+    status_code: 201
