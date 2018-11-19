@@ -220,6 +220,7 @@
       BIZTALK_HOST: 'http\:\/\/php-mock\/Services\/Sales\/biztalk.php\/'
       AWS_ACCESS_KEY_ID: "dummy"
       AWS_SECRET_ACCESS_KEY: "dummy"
+      SYMFONY_DEPRECATIONS_HELPER: "weak"
     networks:
     - name: "{{ slotname }}"
       aliases:
