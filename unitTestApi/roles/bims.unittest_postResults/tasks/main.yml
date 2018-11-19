@@ -18,7 +18,7 @@
     method: POST
     body: "{'text':'test comment','avatarSize':'64'}"
     body_format: json
-    user: "jenkins"
-    password: "aa87597b26adceff4d97d5cfa257c10b"
+    user: "jmunozro"
+    password: "ODIyODg5MzIyNDIwOtzs7nFkPcu/PzWpCPbUHROpVwwu"
     force_basic_auth: yes
     status_code: 201
