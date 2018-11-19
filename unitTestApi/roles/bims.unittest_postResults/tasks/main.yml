@@ -16,7 +16,7 @@
   uri:
     url: "http://10.125.88.140:7991/rest/api/latest/projects/{{ PULL_REQUEST_FROM_REPO_PROJECT_KEY }}/repos/{{ PULL_REQUEST_FROM_REPO_SLUG }}/pull-requests/{{ PULL_REQUEST_ID }}/comments?diffType=EFFECTIVE&avatarSize=64&markup=true"
     method: POST
-    body: "{'text':'test comment','avatarSize':'64'}"
+    body: "{\"text\":\"test comment\",\"avatarSize\":\"64\"}"
     body_format: json
     user: "jmunozro"
     password: "ODIyODg5MzIyNDIwOtzs7nFkPcu/PzWpCPbUHROpVwwu"
