@@ -244,4 +244,4 @@
     force_basic_auth: yes
     status_code: 200
   vars:
-    msg: "{{ commentBB.json.text | replace('\n','\\n') | replace('{{ testSuite }}![Pending](http://aux.iconspalace.com/uploads/20695995291834263959.png)', 'OK' ) }}"
+    msg: "{{ commentBB.json.text | replace('\n','\\n') | replace(testSuite + '![Pending](http://aux.iconspalace.com/uploads/20695995291834263959.png)', 'OK' ) }}"
