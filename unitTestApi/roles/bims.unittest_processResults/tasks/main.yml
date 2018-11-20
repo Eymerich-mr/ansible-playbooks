@@ -2,7 +2,6 @@
 
 - name: "Wait for app slot"
   docker_container:
-    name: "phpunit-cache-reader"
     image: redis:32bit
     detach: no
     cleanup: yes
@@ -17,7 +16,6 @@
 
 - name: "Wait for module slot"
   docker_container:
-    name: "phpunit-cache-reader"
     image: redis:32bit
     detach: no
     cleanup: yes
@@ -32,7 +30,6 @@
 
 - name: "Wait for appController slot"
   docker_container:
-    name: "phpunit-cache-reader"
     image: redis:32bit
     detach: no
     cleanup: yes
@@ -47,7 +44,6 @@
 
 - name: "Wait for integration slot"
   docker_container:
-    name: "phpunit-cache-reader"
     image: redis:32bit
     detach: no
     cleanup: yes
@@ -62,7 +58,6 @@
 
 - name: "Calculate final results"
   docker_container:
-    name: "phpunit-cache-reader"
     image: redis:32bit
     detach: no
     cleanup: yes

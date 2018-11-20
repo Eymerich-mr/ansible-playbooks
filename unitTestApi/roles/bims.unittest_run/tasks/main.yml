@@ -1,8 +1,7 @@
 ---
 
-- name: "Read Commend ID"
+- name: "Read Comment ID"
   docker_container:
-    name: "phpunit-cache-reader"
     image: redis:32bit
     detach: no
     cleanup: yes
@@ -11,7 +10,6 @@
 
 - name: "Read Comment value"
   docker_container:
-    name: "phpunit-cache-reader"
     image: redis:32bit
     detach: no
     cleanup: yes
