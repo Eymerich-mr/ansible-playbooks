@@ -30,6 +30,21 @@
     command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning GET {{ awx_workflow_job_name }}{{ awx_workflow_job_id }}commentVersion"
   register: commentVersion
 
+- name: "Get bitbucket comment"
+  uri:
+    url: "{{ bitbucketURL }}/rest/api/latest/projects/{{ PULL_REQUEST_FROM_REPO_PROJECT_KEY }}/repos/{{ PULL_REQUEST_FROM_REPO_SLUG }}/pull-requests/{{ PULL_REQUEST_ID }}/comments/{{ commID }}"
+    method: GET
+    user: "{{ bitbucketUser }}"
+    password: "{{ bitbucketPassword }}"
+    force_basic_auth: yes
+    status_code: 200
+  register: "commentBB"
+  vars:
+    commID: "{{ commentID.ansible_facts.docker_container.Output |replace('\n', '') }}"
+
+- name: debug bb
+  debug: "{{ commentBB }}"
+
 - name: "Notify bitbucket instance"
   uri:
     url: "{{ bitbucketURL }}/rest/api/latest/projects/{{ PULL_REQUEST_FROM_REPO_PROJECT_KEY }}/repos/{{ PULL_REQUEST_FROM_REPO_SLUG }}/pull-requests/{{ PULL_REQUEST_ID }}/comments/{{ commID }}?diffType=EFFECTIVE&avatarSize=64&markup=true&version={{ commVer }}"
