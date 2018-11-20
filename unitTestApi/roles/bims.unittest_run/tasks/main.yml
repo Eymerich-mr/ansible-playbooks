@@ -32,15 +32,13 @@
 
 - name: "Get bitbucket comment"
   uri:
-    url: "{{ bitbucketURL }}/rest/api/latest/projects/{{ PULL_REQUEST_FROM_REPO_PROJECT_KEY }}/repos/{{ PULL_REQUEST_FROM_REPO_SLUG }}/pull-requests/{{ PULL_REQUEST_ID }}/comments/{{ commID }}"
+    url: "{{ bitbucketURL }}/rest/api/latest/projects/{{ PULL_REQUEST_FROM_REPO_PROJECT_KEY }}/repos/{{ PULL_REQUEST_FROM_REPO_SLUG }}/pull-requests/{{ PULL_REQUEST_ID }}/comments/{{ bitbucketComment.json.id }}"
     method: GET
     user: "{{ bitbucketUser }}"
     password: "{{ bitbucketPassword }}"
     force_basic_auth: yes
     status_code: 200
   register: "commentBB"
-  vars:
-    commID: "{{ commentID.ansible_facts.docker_container.Output |replace('\n', '') }}"
 
 - name: debug bb
   debug:
