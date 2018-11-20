@@ -1,14 +1,14 @@
 ---
 
-- name: "Read Comment ID"
-  docker_container:
-    name: "phpunit-cache-reader-{{ slotname }}"
-    image: redis:32bit
-    detach: no
-    recreate: yes
-    cleanup: yes
-    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning GET {{ awx_workflow_job_name }}{{ awx_workflow_job_id }}commentID"
-  register: commentID
+# name: "Read Comment ID"
+# docker_container:
+#   name: "phpunit-cache-reader-{{ slotname }}"
+#   image: redis:32bit
+#   detach: no
+#   recreate: yes
+#   cleanup: yes
+#   command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning GET {{ awx_workflow_job_name }}{{ awx_workflow_job_id }}commentID#"
+# register: commentID
 
 #- name: "Read Comment value"
 #  docker_container:
