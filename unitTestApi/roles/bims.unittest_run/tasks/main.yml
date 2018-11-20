@@ -22,7 +22,7 @@
 
 - name: "Notify bitbucket instance"
   uri:
-    url: "{{ bitbucketURL }}/rest/api/latest/projects/{{ PULL_REQUEST_FROM_REPO_PROJECT_KEY }}/repos/{{ PULL_REQUEST_FROM_REPO_SLUG }}/pull-requests/{{ PULL_REQUEST_ID }}/comments/{{ commentID }}?diffType=EFFECTIVE&avatarSize=64&markup=true"
+    url: "{{ bitbucketURL }}/rest/api/latest/projects/{{ PULL_REQUEST_FROM_REPO_PROJECT_KEY }}/repos/{{ PULL_REQUEST_FROM_REPO_SLUG }}/pull-requests/{{ PULL_REQUEST_ID }}/comments/{{ commID }}?diffType=EFFECTIVE&avatarSize=64&markup=true"
     method: PUT
     body: "{\"text\":\"{{ msg }}\",\"avatarSize\":\"64\"}"
     body_format: json
@@ -32,7 +32,8 @@
     status_code: 201
   register: "comment"
   vars:
-    msg: "{{ commentValue }}\n{{ testSuite }}![Pending](http://aux.iconspalace.com/uploads/20695995291834263959.png)"
+    msg: "{{ commentValue.ansible_facts.docker_container.Output }}{{ testSuite }}![Pending](http://aux.iconspalace.com/uploads/20695995291834263959.png)"
+    commID: "{{ commentID.ansible_facts.docker_container.Output |replace('\n', '') }}"
 
 - name: "Save new Comment value in redis"
   docker_container:
