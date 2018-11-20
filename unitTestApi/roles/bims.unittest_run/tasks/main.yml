@@ -34,7 +34,7 @@
   uri:
     url: "{{ bitbucketURL }}/rest/api/latest/projects/{{ PULL_REQUEST_FROM_REPO_PROJECT_KEY }}/repos/{{ PULL_REQUEST_FROM_REPO_SLUG }}/pull-requests/{{ PULL_REQUEST_ID }}/comments/{{ commID }}?diffType=EFFECTIVE&avatarSize=64&markup=true&version={{ commVer }}"
     method: PUT
-    body: "{\"text\":\"{{ msg }}\",\"avatarSize\":\"64\"}"
+    body: "{\"text\":\"{{ msg }}\",\"avatarSize\":\"64\",\"version\":\"{{ commVer }}\"}"
     body_format: json
     user: "{{ bitbucketUser }}"
     password: "{{ bitbucketPassword }}"
