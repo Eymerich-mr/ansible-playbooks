@@ -10,25 +10,25 @@
     command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning GET {{ awx_workflow_job_name }}{{ awx_workflow_job_id }}commentID"
   register: commentID
 
-- name: "Read Comment value"
-  docker_container:
-    name: "phpunit-cache-reader-{{ slotname }}"
-    image: redis:32bit
-    detach: no
-    recreate: yes
-    cleanup: yes
-    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning GET {{ awx_workflow_job_name }}{{ awx_workflow_job_id }}comment"
-  register: commentValue
-
-- name: "Read Comment version"
-  docker_container:
-    name: "phpunit-cache-reader-{{ slotname }}"
-    image: redis:32bit
-    detach: no
-    recreate: yes
-    cleanup: yes
-    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning GET {{ awx_workflow_job_name }}{{ awx_workflow_job_id }}commentVersion"
-  register: commentVersion
+#- name: "Read Comment value"
+#  docker_container:
+#    name: "phpunit-cache-reader-{{ slotname }}"
+#    image: redis:32bit
+#    detach: no
+#    recreate: yes
+#    cleanup: yes
+#    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning GET {{ awx_workflow_job_name }}{{ awx_workflow_job_id }}comment"
+#  register: commentValue
+#
+#- name: "Read Comment version"
+#  docker_container:
+#    name: "phpunit-cache-reader-{{ slotname }}"
+#    image: redis:32bit
+#    detach: no
+#    recreate: yes
+#    cleanup: yes
+#    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning GET {{ awx_workflow_job_name }}{{ awx_workflow_job_id }}commentVersion"
+#  register: commentVersion
 
 - name: "Get bitbucket comment"
   uri:
@@ -48,33 +48,31 @@
 
 - name: "Notify bitbucket instance"
   uri:
-    url: "{{ bitbucketURL }}/rest/api/latest/projects/{{ PULL_REQUEST_FROM_REPO_PROJECT_KEY }}/repos/{{ PULL_REQUEST_FROM_REPO_SLUG }}/pull-requests/{{ PULL_REQUEST_ID }}/comments/{{ commID }}?diffType=EFFECTIVE&avatarSize=64&markup=true&version={{ commVer }}"
+    url: "{{ commentBB.msg.url }}#"
     method: PUT
-    body: "{\"text\":\"{{ msg }}\",\"avatarSize\":\"64\",\"version\":\"{{ commVer }}\"}"
+    body: "{\"text\":\"{{ msg }}\",\"avatarSize\":\"64\",\"version\":\"{{ commentBB.msg.version }}\"}"
     body_format: json
     user: "{{ bitbucketUser }}"
     password: "{{ bitbucketPassword }}"
     force_basic_auth: yes
     status_code: 200
-  register: "comment"
-  vars:
-    msg: "{{ commentValue.ansible_facts.docker_container.Output |replace('\n', '') }}\\n{{ testSuite }}![Pending](http://aux.iconspalace.com/uploads/20695995291834263959.png)"
-    commID: "{{ commentID.ansible_facts.docker_container.Output |replace('\n', '') }}"
-    commVer: "{{ commentVersion.ansible_facts.docker_container.Output |replace('\n', '') | int }}"
+#  register: "comment"
+  vars:#
+    msg: "{{ commentBB.msg.text }}\\n{{ testSuite }}![Pending](http://aux.iconspalace.com/uploads/20695995291834263959.png)"
 
-- name: "Save new Comment value in redis"
-  docker_container:
-    name: "phpunit-cache-insert"
-    image: redis:32bit
-    detach: no
-    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning SET {{ awx_workflow_job_name }}{{ awx_workflow_job_id }}comment '{{ comment.json.text }}' EX 3600"
-
-- name: "Save new Version value in redis"
-  docker_container:
-    name: "phpunit-cache-insert"
-    image: redis:32bit
-    detach: no
-    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning SET {{ awx_workflow_job_name }}{{ awx_workflow_job_id }}commentVersion '{{ comment.json.version }}' EX 3600"
+#- name: "Save new Comment value in redis"
+#  docker_container:
+#    name: "phpunit-cache-insert"
+#    image: redis:32bit
+#    detach: no
+#    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning SET {{ awx_workflow_job_name }}{{ awx_workflow_job_id }}comment '{{ comment.json.text }}' EX 3600"
+#
+#- name: "Save new Version value in redis"
+#  docker_container:
+#    name: "phpunit-cache-insert"
+#    image: redis:32bit
+#    detach: no
+#    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning SET {{ awx_workflow_job_name }}{{ awx_workflow_job_id }}commentVersion '{{ comment.json.version }}' EX 3600"
 
 - name: "Create network {{ slotname }}"
   docker_network:
