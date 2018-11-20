@@ -46,7 +46,7 @@
 
 - name: "Notify bitbucket instance"
   uri:
-    url: "{{ commentBB.url }}#"
+    url: "{{ commentBB.url }}"
     method: PUT
     body: "{\"text\":\"{{ msg }}\",\"avatarSize\":\"64\",\"version\":\"{{ commentBB.json.version }}\"}"
     body_format: json
@@ -56,7 +56,7 @@
     status_code: 200
 #  register: "comment"
   vars:
-    msg: "{{ commentBB.json.text }}\\n{{ testSuite }}![Pending](http://aux.iconspalace.com/uploads/20695995291834263959.png)"
+    msg: "{{ commentBB.json.text | replace('\n','\\n') }}{{ testSuite }}![Pending](http://aux.iconspalace.com/uploads/20695995291834263959.png)"
 
 #- name: "Save new Comment value in redis"
 #  docker_container:
