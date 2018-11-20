@@ -46,7 +46,7 @@
 
 - name: "Notify bitbucket instance"
   uri:
-    url: "{{ commentBB.msg.url }}#"
+    url: "{{ commentBB.url }}#"
     method: PUT
     body: "{\"text\":\"{{ msg }}\",\"avatarSize\":\"64\",\"version\":\"{{ commentBB.json.version }}\"}"
     body_format: json
