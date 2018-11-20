@@ -244,4 +244,4 @@
     force_basic_auth: yes
     status_code: 200
   vars:
-    msg: "{{ commentBB.json.text | replace('\n','\\n') | replace(testSuite + '![Pending](http://ps3trophies.com/forums/images/smilies/giggity.gif)', testSuite + '![OK](https://melbournechapter.net/images/background-clipart-green-7.png)' ) }}"
+    msg: "{{ commentBB.json.text | replace('\n','\\n') | replace(testSuite + '![Pending](http://ps3trophies.com/forums/images/smilies/giggity.gif)', testSuite + '![OK](https://melbournechapter.net/images/background-clipart-green-7.png)') }}"
