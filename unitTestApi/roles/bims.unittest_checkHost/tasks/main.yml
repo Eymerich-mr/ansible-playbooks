@@ -55,12 +55,12 @@
     detach: no
     command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning SET {{ awx_workflow_job_name }}{{ awx_workflow_job_id }}commentID '{{ comment.json.id }}' EX 3600"
 
-- name: "Save new Version value in redis"
-  docker_container:
-    name: "phpunit-cache-insert"
-    image: redis:32bit
-    detach: no
-    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning SET {{ awx_workflow_job_name }}{{ awx_workflow_job_id }}commentVersion '-1' EX 3600"
+#- name: "Save new Version value in redis"
+#  docker_container:
+#    name: "phpunit-cache-insert"
+#    image: redis:32bit
+#    detach: no
+#    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning SET {{ awx_workflow_job_name }}{{ awx_workflow_job_id }}commentVersion '-1#' EX 3600"
 
 #- name: Show awx_workflow_job_id
 #  debug:
