@@ -1,39 +1,5 @@
 ---
 
-#- name: "Output test results"
-#  block:
-#  - debug:
-#      msg: "SalesforceBundle: {{ SalesforceBundle | default({}) }}"
-#  - debug:
-#      msg: "IntegrationBundle: {{ IntegrationBundle | default({}) }}"
-#  - debug:
-#      msg: "AppBundle: {{ AppBundle | default({}) }}"
-#  - debug:
-#      msg: "BusinessBundle: {{ BusinessBundle | default({}) }}"
-#  - debug:
-#      msg: "CoreBundle: {{ CoreBundle | default({}) }}"
-#  - debug:
-#      msg: "ModuleBundle: {{ ModuleBundle | default({}) }}"
-
-#- name: "Insert value in redis"
-#  docker_container:
-#    name: "phpunit-cache-insert"
-#    image: redis:32bit
-#    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} SET testData testValue EX 3600"
-#
-#- name: "Read value from redis"
-#  docker_container:
-#    name: "phpunit-cache-reader"
-#    image: redis:32bit
-#    detach: no
-#    cleanup: yes
-#    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning GET testData"
-#  register: redis_container_output
-#
-#- name: Show test output
-#  debug:
-#    msg: "{{ redis_container_output.ansible_facts.docker_container.Output }}"
-
 - name: "Notify bitbucket instance"
   uri:
     url: "{{ bitbucketURL }}/rest/api/latest/projects/{{ PULL_REQUEST_FROM_REPO_PROJECT_KEY }}/repos/{{ PULL_REQUEST_FROM_REPO_SLUG }}/pull-requests/{{ PULL_REQUEST_ID }}/comments?diffType=EFFECTIVE&avatarSize=64&markup=true"
@@ -52,20 +18,6 @@
   set_stats:
     data:
       bitbucketComment:  "{{ comment }}"
-
-#- name: "Insert value in redis"
-#  docker_container:
-#    nam#e: "phpunit-cache-insert"
-#    image: redis:32bit
-#    detach: no
-#    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning SET {{ awx_workflow_job_name }}{{ awx_workflow_job_id }}commentID '{{ comment.json.id }}' EX 3600"
-
-#- name: "Save new Version value in redis"
-#  docker_container:
-#    name: "phpunit-cache-insert"
-#    image: redis:32bit
-#    detach: no
-#    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning SET {{ awx_workflow_job_name }}{{ awx_workflow_job_id }}commentVersion '-1#' EX 3600"
 
 #- name: Show awx_workflow_job_id
 #  debug:
