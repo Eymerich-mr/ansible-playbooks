@@ -57,7 +57,7 @@
     force_basic_auth: yes
     status_code: 200
 #  register: "comment"
-  vars:#
+  vars:
     msg: "{{ commentBB.msg.text }}\\n{{ testSuite }}![Pending](http://aux.iconspalace.com/uploads/20695995291834263959.png)"
 
 #- name: "Save new Comment value in redis"
