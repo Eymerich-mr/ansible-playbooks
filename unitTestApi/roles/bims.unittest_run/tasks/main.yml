@@ -2,16 +2,20 @@
 
 - name: "Read Comment ID"
   docker_container:
+    name: "phpunit-cache-reader-{{ slotname }}"
     image: redis:32bit
     detach: no
+    recreate: yes
     cleanup: yes
     command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning GET {{ awx_workflow_job_name }}{{ awx_workflow_job_id }}commentID"
   register: commentID
 
 - name: "Read Comment value"
   docker_container:
+    name: "phpunit-cache-reader-{{ slotname }}"
     image: redis:32bit
     detach: no
+    recreate: yes
     cleanup: yes
     command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning GET {{ awx_workflow_job_name }}{{ awx_workflow_job_id }}comment"
   register: commentValue
@@ -211,8 +215,8 @@
     working_dir: "/var/www/html/app"
     command: "/var/www/html/bin/phpunit --testsuite {{ testSuite }}"
     detach: false
-    cleanup: yes
     recreate: yes
+    cleanup: yes
     env:
       BIMS_ENV: local
       BIZTALK_HOST: 'http\:\/\/php-mock\/Services\/Sales\/biztalk.php\/'

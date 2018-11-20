@@ -2,8 +2,10 @@
 
 - name: "Wait for app slot"
   docker_container:
+    name: "phpunit-cache-reader"
     image: redis:32bit
     detach: no
+    recreate: yes
     cleanup: yes
     command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning EXISTS {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ item }}"
   register: "redis_container_tmp"
@@ -16,8 +18,10 @@
 
 - name: "Wait for module slot"
   docker_container:
+    name: "phpunit-cache-reader"
     image: redis:32bit
     detach: no
+    recreate: yes
     cleanup: yes
     command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning EXISTS {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ item }}"
   register: "redis_container_tmp"
@@ -30,8 +34,10 @@
 
 - name: "Wait for appController slot"
   docker_container:
+    name: "phpunit-cache-reader"
     image: redis:32bit
     detach: no
+    recreate: yes
     cleanup: yes
     command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning EXISTS {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ item }}"
   register: "redis_container_tmp"
@@ -44,8 +50,10 @@
 
 - name: "Wait for integration slot"
   docker_container:
+    name: "phpunit-cache-reader"
     image: redis:32bit
     detach: no
+    recreate: yes
     cleanup: yes
     command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning EXISTS {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ item }}"
   register: "redis_container_tmp"
@@ -58,8 +66,10 @@
 
 - name: "Calculate final results"
   docker_container:
+    name: "phpunit-cache-reader"
     image: redis:32bit
     detach: no
+    recreate: yes
     cleanup: yes
     command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning GET {{ awx_workflow_job_name | default('wf') }}{{ awx_workflow_job_id | default('00') }}{{ item }}"
   register: "redis_container_final"
