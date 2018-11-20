@@ -221,7 +221,7 @@
     name: "phpunit-cache-insert"
     image: redis:32bit
     detach: no
-    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning SET {{ awx_workflow_job_name }}{{ awx_workflow_job_id }}{{ slotname }} '{{ results.ansible_facts.docker_container.Output }}' EX 3600"
+    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning SET {{ awx_workflow_job_name }}{{ awx_workflow_job_id }}{{ slotname }} '{{ results.msg | default(results.ansible_facts.docker_container.Output) }}' EX 3600"
 
 - name: "Get bitbucket comment"
   uri:
