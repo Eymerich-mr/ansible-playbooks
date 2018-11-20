@@ -44,7 +44,7 @@
   vars:
     msg: "{{ commentValue.ansible_facts.docker_container.Output |replace('\n', '') }}\\n{{ testSuite }}![Pending](http://aux.iconspalace.com/uploads/20695995291834263959.png)"
     commID: "{{ commentID.ansible_facts.docker_container.Output |replace('\n', '') }}"
-    commVer: "{{ commentID.ansible_facts.docker_container.Output |replace('\n', '') | default(0) | int + 1 }}"
+    commVer: "{{ commentVersion.ansible_facts.docker_container.Output |replace('\n', '') | default(0) | int + 1 }}"
 
 - name: "Save new Comment value in redis"
   docker_container:
