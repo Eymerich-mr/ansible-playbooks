@@ -44,7 +44,7 @@
   vars:
     msg: "{{ commentValue.ansible_facts.docker_container.Output |replace('\n', '') }}\\n{{ testSuite }}![Pending](http://aux.iconspalace.com/uploads/20695995291834263959.png)"
     commID: "{{ commentID.ansible_facts.docker_container.Output |replace('\n', '') }}"
-    commVer: "{{ commentVersion.ansible_facts.docker_container.Output |replace('\n', '') | default(-1) | int + 1 }}"
+    commVer: "{{ commentVersion.ansible_facts.docker_container.Output |replace('\n', '') | int + 1 }}"
 
 - name: "Save new Comment value in redis"
   docker_container:
@@ -58,7 +58,7 @@
     name: "phpunit-cache-insert"
     image: redis:32bit
     detach: no
-    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning SET {{ awx_workflow_job_name }}{{ awx_workflow_job_id }}comment '{{ comment.json.version }}' EX 3600"
+    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning SET {{ awx_workflow_job_name }}{{ awx_workflow_job_id }}commentVersion '{{ comment.json.version }}' EX 3600"
 
 - name: "Create network {{ slotname }}"
   docker_network:
