@@ -21,7 +21,7 @@
     force_basic_auth: yes
     status_code: 200
   vars:
-    msg: "{{ commentBB.json.text | replace('\n','\\n') }}\\n{{ testSuite }} is in progress![Pending](http://ps3trophies.com/forums/images/smilies/giggity.gif)"
+    msg: "{{ commentBB.json.text | replace('\n','\\n') }}\\n{{ testSuite }}{{ imgPending }}"
 
 - name: "Create network {{ slotname }}"
   docker_network:
@@ -221,7 +221,7 @@
     name: "phpunit-cache-insert"
     image: redis:32bit
     detach: no
-    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning SET {{ awx_workflow_job_name }}{{ awx_workflow_job_id }}{{ slotname }} '{{ results.msg | default(results.ansible_facts.docker_container.Output) }}' EX 3600"
+    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning SET {{ awx_workflow_job_name }}{{ awx_workflow_job_id }}{{ slotname }} '{{ results.failed | ternary(results.msg, results.ansible_facts.docker_container.Output) }}' EX 3600"
 
 - name: "Get bitbucket comment"
   uri:
@@ -244,4 +244,4 @@
     force_basic_auth: yes
     status_code: 200
   vars:
-    msg: "{{ commentBB.json.text | replace('\n','\\n') | replace(testSuite + ' is in progress![Pending](http://ps3trophies.com/forums/images/smilies/giggity.gif)', testSuite + '![OK](https://melbournechapter.net/images/background-clipart-green-7.png)') }}"
+    msg: "{{ commentBB.json.text | replace('\n','\\n') | replace(testSuite + imgPending, testSuite + (imgKO if results.failed else imgOK)) }}"

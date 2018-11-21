@@ -11,6 +11,9 @@
   - redisHost: "redis-19834.c6.eu-west-1-1.ec2.cloud.redislabs.com"
   - redisPort: "19834"
   - redisPass: "Temporal01!"
+  - imgPending: " is in progress![Pending](http://ps3trophies.com/forums/images/smilies/giggity.gif)"
+  - imgOK: "![OK](https://cdn3.iconfinder.com/data/icons/fatcow/32/accept.png)"
+  - imgKO: "![FAIL](https://nullthemedownload.com/content/logo/windows-error-lookup-tool-portable-logo.gif)"
   roles:
   - { role: bims.unittest_checkHost, when: checkHost is defined and checkHost}
   - { role: bims.unittest_run, when: execute is defined and execute}
