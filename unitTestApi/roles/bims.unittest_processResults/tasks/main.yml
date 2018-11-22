@@ -78,7 +78,7 @@
     key: "{{ awx_workflow_job_name }} #{{ awx_workflow_job_id }}"
     state: "FAILED"
     url: "http://10.125.104.112/#/workflows/{{ awx_workflow_job_id }}"
-    name: "{{ awx_workflow_job_name }} #{{ awx_workflow_job_id }}"
+    name: "Click for more details"
     description: "{{ awx_workflow_job_name }} #{{ awx_workflow_job_id }}"
 
 - name: "Calculate final results"
@@ -112,5 +112,5 @@
     key: "{{ awx_workflow_job_name }} #{{ awx_workflow_job_id }}"
     state: "SUCCESSFUL"
     url: "http://10.125.104.112/#/workflows/{{ awx_workflow_job_id }}"
-    name: "{{ awx_workflow_job_name }} #{{ awx_workflow_job_id }}"
+    name: "Click for more details"
     description: "{{ awx_workflow_job_name }} #{{ awx_workflow_job_id }}"
