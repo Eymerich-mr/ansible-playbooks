@@ -19,6 +19,23 @@
     data:
       bitbucketComment:  "{{ comment }}"
 
+- name: "Notify bitbucket instance"
+  uri:
+    url: "{{ bitbucketURL }}/rest/build-status/latest/commits/{{ PULL_REQUEST_FROM_HASH }}"
+    method: POST
+    body: "{\"key\":\"{{ key }}\",\"state\":\"{{ state }}\",\"url\":\"{{ url }}\",\"name\":\"{{ name }}\",\"description\":\"{{ description }}\"}"
+    body_format: json
+    user: "{{ bitbucketUser }}"
+    password: "{{ bitbucketPassword }}"
+    force_basic_auth: yes
+    status_code: 204
+  vars:
+    key: "{{ awx_workflow_job_name }} #{{ awx_workflow_job_id }}"
+    state: "INPROGRESS"
+    url: "https://bims-dev1.bca.com/"
+    name: "{{ awx_workflow_job_name }} #{{ awx_workflow_job_id }}"
+    description: "{{ awx_workflow_job_name }} #{{ awx_workflow_job_id }}"
+
 #- name: Show awx_workflow_job_id
 #  debug:
 #    msg: "{{ awx_workflow_job_id | default('kk') }}"
