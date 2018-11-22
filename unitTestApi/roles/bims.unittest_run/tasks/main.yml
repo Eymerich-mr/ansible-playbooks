@@ -212,25 +212,18 @@
   ignore_errors: yes
   register: results
 
-- name: debug bb
+- name: "debug bb"
   debug:
     msg: "{{ results }}"
 
 - name: "Results Summary"
   debug:
-    msg: "{{ results.msg }}"
-  register: "results_formatted"
-  when: "results.failed"
-
-- name: "Results Summary"
-  debug:
-    msg: "{{ results.ansible_facts.docker_container.Output | regex_search(exp) }}"
+    msg: "{{ results if results.failed else (results.ansible_facts.docker_container.Output | regex_search(exp)) }}"
   vars:
     exp: "OK \\(\\d+ tests, \\d+ assertions\\)"
   register: "results_formatted"
-  when: "not results.failed"
 
-- name: debug bb
+- name: "debug results formatted"
   debug:
     msg: "{{ results_formatted }}"
 
