@@ -32,7 +32,7 @@
   vars:
     key: "{{ awx_workflow_job_name }} #{{ awx_workflow_job_id }}"
     state: "INPROGRESS"
-    url: "https://bims-dev1.bca.com/"
+    url: "http://10.125.104.112/#/workflows/{{ awx_workflow_job_id }}"
     name: "{{ awx_workflow_job_name }} #{{ awx_workflow_job_id }}"
     description: "{{ awx_workflow_job_name }} #{{ awx_workflow_job_id }}"
 
