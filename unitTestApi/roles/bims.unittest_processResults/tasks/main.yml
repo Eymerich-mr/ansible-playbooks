@@ -74,6 +74,7 @@
     command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning GET {{ awx_workflow_job_name }}{{ awx_workflow_job_id }}{{ item }}"
   register: "redis_container_final"
   changed_when: false
+  failed_when: "redis_container_final.ansible_facts.docker_container.Output !== 'True\n'"
   loop:
   - app
   - module
@@ -82,7 +83,7 @@
 
 - name: Show debug
   debug:
-    msg: "{{ redis_container_final.msg }}"
+    msg: "{{ redis_container_final }}"
 
 #- name: "Final results"
 #  debug:
@@ -92,8 +93,8 @@
 #  register: "redis_container_final_formatted"
 #  loop: "{{ redis_container_final.results }}"
 
-- name: "Check final results"
-  fail:
-    msg: "{{ item }}"
-  when: item.msg
-  loop: "{{ redis_container_final_formatted.results }}"
+#- name: "Check final results"
+#  fail:
+#    msg: "{{ item }}"
+#  when: item.msg
+#  loop: "{{ redis_container_final_formatted.results }}"
