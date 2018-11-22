@@ -218,7 +218,7 @@
 
 - name: "Results Summary"
   debug:
-    msg: "{{ results if results.failed else (results.ansible_facts.docker_container.Output | regex_search(exp)) }}"
+    msg: "{{ results.msg if results.failed else (results.ansible_facts.docker_container.Output | regex_search(exp)) }}"
   vars:
     exp: "OK \\(\\d+ tests, \\d+ assertions\\)"
   register: "results_formatted"
