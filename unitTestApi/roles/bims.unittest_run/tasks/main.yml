@@ -216,12 +216,30 @@
   debug:
     msg: "{{ results }}"
 
+- name: "Results Summary"
+  debug:
+    msg: "{{ results.msg }}"
+  register: "results_formatted"
+  when: "results.failed"
+
+- name: "Results Summary"
+  debug:
+    msg: "{{ results.ansible_facts.docker_container.Output | regex_search(exp) }}"
+  vars:
+    exp: "OK \\(\\d+ tests, \\d+ assertions\\)"
+  register: "results_formatted"
+  when: "not results.failed"
+
+- name: debug bb
+  debug:
+    msg: "{{ results_formatted }}"
+
 - name: "Insert value in redis"
   docker_container:
     name: "phpunit-cache-insert"
     image: redis:32bit
     detach: no
-    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning SET {{ awx_workflow_job_name }}{{ awx_workflow_job_id }}{{ slotname }} '{{ results.msg if results.failed else results.ansible_facts.docker_container.Output }}' EX 3600"
+    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning SET {{ awx_workflow_job_name }}{{ awx_workflow_job_id }}{{ slotname }} '{{ not results.failed}}' EX 3600"
 
 - name: "Get bitbucket comment"
   uri:
@@ -244,4 +262,4 @@
     force_basic_auth: yes
     status_code: 200
   vars:
-    msg: "{{ commentBB.json.text | replace('\n','\\n') | replace(testSuite + imgPending, testSuite + (imgKO if results.failed else imgOK)) }}"
+    msg: "{{ commentBB.json.text | replace('\n','\\n') | replace(testSuite + imgPending, testSuite + (imgKO if results.failed else imgOK) + results_formatted) }}"

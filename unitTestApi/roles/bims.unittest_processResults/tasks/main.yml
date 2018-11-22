@@ -84,16 +84,16 @@
   debug:
     msg: "{{ redis_container_final.msg }}"
 
-- name: "Final results"
-  debug:
-    msg: "{{ item.ansible_facts.docker_container.Output | regex_search(exp) }}"
-  vars:
-    exp: "OK \\(\\d+ tests, \\d+ assertions\\)"
-  register: "redis_container_final_formatted"
-  loop: "{{ redis_container_final.results }}"
+#- name: "Final results"
+#  debug:
+#    msg: "{{ item.ansible_facts.docker_container.Output | regex_search(exp) }}"
+#  vars:
+#    exp: "OK \\(\\d+ tests, \\d+ assertions\\)"
+#  register: "redis_container_final_formatted"
+#  loop: "{{ redis_container_final.results }}"
 
 - name: "Check final results"
   fail:
     msg: "{{ item }}"
-  when: item.msg == ""
+  when: item.msg
   loop: "{{ redis_container_final_formatted.results }}"
