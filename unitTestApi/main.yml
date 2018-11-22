@@ -18,4 +18,3 @@
   - { role: bims.unittest_checkHost, when: checkHost is defined and checkHost}
   - { role: bims.unittest_run, when: execute is defined and execute}
   - { role: bims.unittest_processResults, when: processResults is defined and processResults }
-  - { role: bims.unittest_postResults, when: postResults is defined and postResults }
