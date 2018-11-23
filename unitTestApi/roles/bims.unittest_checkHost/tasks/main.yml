@@ -48,13 +48,9 @@
     dest: "/tmp/api"
     version: "feature/development/phpunit"
 
+# There is no support for --target in docker_image module as current 1.5 version
 - name: "Build PR image"
-  git:
-    repo: "ssh://git@hd-2k8-ss02:7998/bcaim/api.git"
-    accept_hostkey: yes
-    force: yes
-    dest: "/tmp/api"
-    version: "feature/development/phpunit"
+  shell: "docker build --build-arg COMPOSER_OPTS='' --pull -t 042475824269.dkr.ecr.eu-west-1.amazonaws.com/bims_api:pr{{ awx_workflow_job_name }}{{ awx_workflow_job_id }} --target base_with_dependencies /tmp/api"
 
 #- name: Show awx_workflow_job_id
 #  debug:
