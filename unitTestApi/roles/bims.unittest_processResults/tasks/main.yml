@@ -87,7 +87,7 @@
 
 - name: "Record elapsed time"
   set_fact:
-    ELAPSED: "{{ '%H:%M:%S' | strftime(END_TIME -START_TIME ) }}"
+    ELAPSED: "{{ '%H:%M:%S' | strftime(END_TIME - START_TIME ) }}"
 
 - name: "Get bitbucket comment"
   uri:
