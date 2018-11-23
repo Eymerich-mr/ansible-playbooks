@@ -1,7 +1,8 @@
 ---
 
-- set_fact:
-  START_TIME: "{{ lookup('pipe','date \"+%s\"') }}"
+- name: "Record start time"
+  set_fact:
+    START_TIME: "{{ lookup('pipe','date \"+%s\"') }}"
 
 - name: "Notify bitbucket instance"
   uri:
