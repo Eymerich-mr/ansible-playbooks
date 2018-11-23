@@ -50,7 +50,7 @@
 
 # There is no support for --target in docker_image module as current 1.5 version
 - name: "Build PR image"
-  shell: "docker build --build-arg COMPOSER_OPTS='' --pull -t 042475824269.dkr.ecr.eu-west-1.amazonaws.com/bims_api:pr{{ awx_workflow_job_name }}{{ awx_workflow_job_id }} --target base_with_dependencies /tmp/api"
+  shell: "docker build --build-arg COMPOSER_OPTS='' --pull -t {{ phpImage }} --target base_with_dependencies /tmp/api"
 
 #- name: Show awx_workflow_job_id
 #  debug:

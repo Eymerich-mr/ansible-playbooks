@@ -193,7 +193,7 @@
   docker_container:
     name: "{{ slotname }}_php-fpm"
     image: "{{ phpImage }}"
-    pull: yes
+    pull: no
     working_dir: "/var/www/html/app"
     volumes:
     - "/tmp/api/app/:/var/www/html/app/"
