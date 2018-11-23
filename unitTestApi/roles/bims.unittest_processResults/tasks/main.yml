@@ -81,6 +81,35 @@
     name: "Click for more details"
     description: "{{ awx_workflow_job_name }} #{{ awx_workflow_job_id }}"
 
+- set_fact:
+    END_TIME: "{{ lookup('pipe','date \"+%s\"') }}"
+
+- set_fact:
+    ELAPSED: "{{ '%H:%M:%S' | strftime(END_TIME -START_TIME ) }}"
+
+- name: "Get bitbucket comment"
+  uri:
+    url: "{{ bitbucketURL }}/rest/api/latest/projects/{{ PULL_REQUEST_FROM_REPO_PROJECT_KEY }}/repos/{{ PULL_REQUEST_FROM_REPO_SLUG }}/pull-requests/{{ PULL_REQUEST_ID }}/comments/{{ bitbucketComment.json.id }}"
+    method: GET
+    user: "{{ bitbucketUser }}"
+    password: "{{ bitbucketPassword }}"
+    force_basic_auth: yes
+    status_code: 200
+  register: "commentBB"
+
+- name: "Notify bitbucket instance"
+  uri:
+    url: "{{ commentBB.url }}"
+    method: PUT
+    body: "{\"text\":\"{{ msg }}\",\"avatarSize\":\"64\",\"version\":\"{{ commentBB.json.version }}\"}"
+    body_format: json
+    user: "{{ bitbucketUser }}"
+    password: "{{ bitbucketPassword }}"
+    force_basic_auth: yes
+    status_code: 200
+  vars:
+    msg: "{{ commentBB.json.text | replace('started', 'took ' + ELAPSED) | replace('\n','\\n') }}"
+
 - name: "Calculate final results"
   docker_container:
     name: "phpunit-cache-reader"

@@ -1,5 +1,8 @@
 ---
 
+- set_fact:
+  START_TIME: "{{ lookup('pipe','date \"+%s\"') }}"
+
 - name: "Notify bitbucket instance"
   uri:
     url: "{{ bitbucketURL }}/rest/api/latest/projects/{{ PULL_REQUEST_FROM_REPO_PROJECT_KEY }}/repos/{{ PULL_REQUEST_FROM_REPO_SLUG }}/pull-requests/{{ PULL_REQUEST_ID }}/comments?diffType=EFFECTIVE&avatarSize=64&markup=true"
