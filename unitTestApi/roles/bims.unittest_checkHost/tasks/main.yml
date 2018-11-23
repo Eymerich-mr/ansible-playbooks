@@ -2,7 +2,7 @@
 
 - name: "Record start time"
   set_fact:
-    START_TIME: "{{ lookup('pipe','date \"+%s\"') }}"
+    START_TIME: "{{ lookup('pipe','date \"+%s\"') | int }}"
 
 - name: "Notify bitbucket instance"
   uri:
@@ -39,6 +39,22 @@
     url: "http://10.125.104.112/#/workflows/{{ awx_workflow_job_id }}"
     name: "Click for more details"
     description: "{{ awx_workflow_job_name }} #{{ awx_workflow_job_id }}"
+
+- name: "Update api code"
+  git:
+    repo: "ssh://git@hd-2k8-ss02:7998/bcaim/api.git"
+    accept_hostkey: yes
+    force: yes
+    dest: "/tmp/api"
+    version: "feature/development/phpunit"
+
+- name: "Build PR image"
+  git:
+    repo: "ssh://git@hd-2k8-ss02:7998/bcaim/api.git"
+    accept_hostkey: yes
+    force: yes
+    dest: "/tmp/api"
+    version: "feature/development/phpunit"
 
 #- name: Show awx_workflow_job_id
 #  debug:
