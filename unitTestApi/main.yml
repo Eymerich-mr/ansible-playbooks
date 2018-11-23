@@ -7,7 +7,7 @@
   - slotname: "ut1"
   - bundle: "src/BCA/IntegrationBundle"
   - testSuite: "AppBundle,BusinessBundle,CoreBundle,IntegrationBundle,ModuleBundle,SalesforceBundle,AppBundle-Controller,DataBundle"
-  - phpImage: "042475824269.dkr.ecr.eu-west-1.amazonaws.com/bims_api:prtest"
+  - phpImage: "042475824269.dkr.ecr.eu-west-1.amazonaws.com/bims_api:{{ awx_workflow_job_name }}{{ awx_workflow_job_id }}"
   - redisHost: "redis-19834.c6.eu-west-1-1.ec2.cloud.redislabs.com"
   - redisPort: "19834"
   - redisPass: "Temporal01!"

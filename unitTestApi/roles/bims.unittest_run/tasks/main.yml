@@ -195,6 +195,12 @@
     image: "{{ phpImage }}"
     pull: yes
     working_dir: "/var/www/html/app"
+    volumes:
+    - "/tmp/api/app/:/var/www/html/app/"
+    - "/tmp/api/bin/console:/var/www/html/app/bin/console"
+    - "/tmp/api/src/:/var/www/html/src/"
+    - "/tmp/api/var/:/var/www/html/var/"
+    - "/tmp/api/web/:/var/www/html/web/"
     command: "/var/www/html/bin/phpunit --testsuite {{ testSuite }}"
     detach: false
     recreate: yes
