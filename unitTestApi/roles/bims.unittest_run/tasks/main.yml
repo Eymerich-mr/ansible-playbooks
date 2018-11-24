@@ -167,7 +167,6 @@
     working_dir: "/var/www/html/app"
     volumes:
     - "/tmp/api/app/:/var/www/html/app/"
-    - "/tmp/{{ awx_workflow_job_name }}{{ awx_workflow_job_id }}.yml:/var/www/html/app/config/parameters.yml"
     - "/tmp/api/bin/console:/var/www/html/app/bin/console"
     - "/tmp/api/src/:/var/www/html/src/"
     - "/tmp/api/var/:/var/www/html/var/"
