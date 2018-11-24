@@ -2,7 +2,7 @@
 
 - name: "Record start time"
   set_fact:
-    START_TIME: "{{ lookup('pipe','date \"+%s\"') | int }}"
+    START_TIME: "{{ lookup('pipe','date \"+%s\"') }}"
 
 - name: "Notify bitbucket instance"
   uri:
@@ -70,7 +70,7 @@
 
 - name: "Record end time"
   set_fact:
-    END_TIME: "{{ lookup('pipe','date \"+%s\"') | int }}"
+    END_TIME: "{{ lookup('pipe','date \"+%s\"') }}"
 
 - name: Debug test
   debug:
@@ -82,7 +82,7 @@
 
 - name: "Record elapsed time"
   set_fact:
-    ELAPSED: "{{ '%H:%M:%S' | strftime(DIFF) }}"
+    ELAPSED: "{{ '%H:%M:%S' | strftime(END_TIME |int - START_TIME|int) }}"
 
 - name: Debug test
   debug:
