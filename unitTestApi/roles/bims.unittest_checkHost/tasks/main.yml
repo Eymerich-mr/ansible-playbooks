@@ -52,9 +52,26 @@
 - name: "Build PR image"
   shell: "docker build --build-arg COMPOSER_OPTS='' --pull -t {{ phpImage }} --target base_with_dependencies /tmp/api"
 
+- name: "Tweak the build"
+  copy:
+    src: "/tmp/api/app/config/parameters.yml.dist"
+    dest: "/tmp/parameters/{{ awx_workflow_job_name }}{{ awx_workflow_job_id }}.yml"
+
 #- name: Show awx_workflow_job_id
 #  debug:
 #    msg: "{{ awx_workflow_job_id | default('kk') }}"
 #- name: Show awx_workflow_job_name
 #  debug:
 #    msg: #"{{ awx_workflow_job_name | default('kk') }}"
+
+- name: "Record end time"
+  set_fact:
+    END_TIME: "{{ lookup('pipe','date \"+%s\"') | int }}"
+
+- name: "Record elapsed time"
+  set_fact:
+    ELAPSED: "{{ '%H:%M:%S' | strftime(END_TIME - START_TIME ) }}"
+
+- name: Debug test
+  debug:
+    var: "{{ 'started' | replace('started', 'took ' + ELAPSED) | replace('\n','\\n') }}"

@@ -64,7 +64,7 @@
   loop:
   - integration
 
-- name: "Notify bitbucket instance"
+- name: "Notify bitbucket instance of FAILURE"
   uri:
     url: "{{ bitbucketURL }}/rest/build-status/latest/commits/{{ PULL_REQUEST_FROM_HASH }}"
     method: POST
@@ -129,7 +129,7 @@
   - appController
   - integration
 
-- name: "Notify bitbucket instance"
+- name: "Notify bitbucket instance of SUCCESSFUL"
   uri:
     url: "{{ bitbucketURL }}/rest/build-status/latest/commits/{{ PULL_REQUEST_FROM_HASH }}"
     method: POST
