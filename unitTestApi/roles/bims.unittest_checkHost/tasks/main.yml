@@ -74,11 +74,11 @@
 
 - name: Debug test
   debug:
-    var: "{{ END_TIME }}"
+    var: "{{ END_TIME |int }}"
 
 - name: "Record elapsed time"
   set_fact:
-    DIFF: "{{ END_TIME - START_TIME }}"
+    DIFF: "{{ END_TIME |int - START_TIME|int }}"
 
 - name: "Record elapsed time"
   set_fact:
