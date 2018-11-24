@@ -86,4 +86,4 @@
 
 - name: Debug test
   debug:
-    var: "{{ 'started' | replace('started', 'took ' + ELAPSED) | replace('\n','\\n') }}"
+    var: "{{ 'started' | replace('started', 'took ' + '%H:%M:%S' | strftime(END_TIME |int - START_TIME|int)) | replace('\n','\\n') }}"
