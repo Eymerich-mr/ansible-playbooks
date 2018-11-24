@@ -59,7 +59,7 @@
   copy:
     src: "/tmp/api/app/config/parameters.yml.dist"
     dest: "/tmp/{{ awx_workflow_job_name }}{{ awx_workflow_job_id }}.yml"
-    mode: 0644
+    mode: 0666
     remote_src: yes
 
 #- name: Show awx_workflow_job_id
