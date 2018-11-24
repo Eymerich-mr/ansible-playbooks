@@ -34,7 +34,7 @@
     force_basic_auth: yes
     status_code: 204
   vars:
-    key: "{{ awx_workflow_job_name }} #{{ awx_workflow_job_id }}"
+    key: "{{ awx_workflow_job_name }}"
     state: "INPROGRESS"
     url: "http://10.125.104.112/#/workflows/{{ awx_workflow_job_id }}"
     name: "Click for more details"
@@ -58,7 +58,7 @@
 - name: "Tweak the build"
   copy:
     src: "/tmp/api/app/config/parameters.yml.dist"
-    dest: "/tmp/parameters/{{ awx_workflow_job_name }}{{ awx_workflow_job_id }}.yml"
+    dest: "/tmp/{{ awx_workflow_job_name }}{{ awx_workflow_job_id }}.yml"
     remote_src: yes
 
 #- name: Show awx_workflow_job_id
