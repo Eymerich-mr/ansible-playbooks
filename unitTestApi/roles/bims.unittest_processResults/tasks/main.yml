@@ -106,7 +106,7 @@
     force_basic_auth: yes
     status_code: 200
   vars:
-    msg: "{{ commentBB.json.text | replace('started', 'took ' + strftime((END_TIME |int - START_TIME|int))|string)) | replace('\n','\\n') }}"
+    msg: "{{ commentBB.json.text | replace('started', 'took ' + (strftime(END_TIME |int - START_TIME|int)|string)) | replace('\n','\\n') }}"
 
 - name: "Calculate final results"
   docker_container:
