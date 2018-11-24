@@ -72,9 +72,17 @@
   set_fact:
     END_TIME: "{{ lookup('pipe','date \"+%s\"') | int }}"
 
+- name: Debug test
+  debug:
+    var: "{{ END_TIME }}"
+
 - name: "Record elapsed time"
   set_fact:
-    ELAPSED: "{{ '%H:%M:%S' | strftime(END_TIME - START_TIME ) }}"
+    DIFF: "{{ END_TIME - START_TIME }}"
+
+- name: "Record elapsed time"
+  set_fact:
+    ELAPSED: "{{ '%H:%M:%S' | strftime(DIFF) }}"
 
 - name: Debug test
   debug:
