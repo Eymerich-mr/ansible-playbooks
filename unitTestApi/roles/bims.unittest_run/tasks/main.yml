@@ -232,4 +232,4 @@
     force_basic_auth: yes
     status_code: 200
   vars:
-    msg: "{{ commentBB.json.text | replace(testSuite + imgPending, testSuite + (imgKO if results.failed else imgOK) + results_formatted.msg) | replace('\n','\\n') }}"
+    msg: "{{ commentBB.json.text | replace(testSuite + imgPending, testSuite + (imgKO if results.failed else imgOK) + results_formatted.msg|string) | replace('\n','\\n') }}"
