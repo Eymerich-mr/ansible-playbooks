@@ -67,23 +67,3 @@
 #- name: Show awx_workflow_job_name
 #  debug:
 #    msg: #"{{ awx_workflow_job_name | default('kk') }}"
-
-- name: "Record end time"
-  set_fact:
-    END_TIME: "{{ lookup('pipe','date \"+%s\"') }}"
-
-- name: Debug test
-  debug:
-    var: "{{ END_TIME |int }}"
-
-- name: "Record elapsed time"
-  set_fact:
-    DIFF: "{{ END_TIME |int - START_TIME|int }}"
-
-- name: "Record elapsed time"
-  set_fact:
-    ELAPSED: "{{ '%H:%M:%S' | strftime(END_TIME |int - START_TIME|int) }}"
-
-- name: Debug test
-  debug:
-    msg: "{{ 'started' | replace('started', 'took ' + '%H:%M:%S' | strftime((END_TIME |int - START_TIME|int))|string) | replace('\n','\\n') }}"
