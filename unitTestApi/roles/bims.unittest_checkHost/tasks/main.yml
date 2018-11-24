@@ -48,6 +48,9 @@
     dest: "/tmp/api"
     version: "feature/development/phpunit"
 
+- name: "ECR login"
+  shell: "$(aws ecr get-login --region eu-west-1 --no-include-email)"
+
 # There is no support for --target in docker_image module as current 1.5 version
 - name: "Build PR image"
   shell: "docker build --build-arg COMPOSER_OPTS='' --pull -t {{ phpImage }} --target base_with_dependencies /tmp/api"

@@ -96,9 +96,6 @@
       aliases:
       - sqs
 
-- name: "ECR login"
-  shell: "$(aws ecr get-login --region eu-west-1 --no-include-email)"
-
 - name: "Get mysql IP address"
   command: "docker inspect --format '{''{ .NetworkSettings.IPAddress }''}' {{ slotname }}_activiti-database"
   register: mysql_ip_address
@@ -132,33 +129,6 @@
   wait_for:
     host: "{{ mongo_ip_address.stdout }}"
     port: 27017
-
-- name: "Start api-micro, connect to network {{ slotname }}"
-  docker_container:
-    name: "{{ slotname }}_php-fpm-micro"
-    state: stopped
-    image: 042475824269.dkr.ecr.eu-west-1.amazonaws.com/bims_api_micro:latest
-    pull: yes
-    env:
-      BIMS_ENV: local
-    networks:
-    - name: "{{ slotname }}"
-      aliases:
-      - php-fpm-micro
-
-- name: "Start web, connect to network {{ slotname }}"
-  docker_container:
-    name: "{{ slotname }}_ngnix"
-    state: stopped
-    image: 042475824269.dkr.ecr.eu-west-1.amazonaws.com/bims_web:latest
-    pull: yes
-    env:
-      BIMS_ENV: local
-      SYMFONY_ENV: dev
-    networks:
-    - name: "{{ slotname }}"
-      aliases:
-      - nginx
 
 - name: "Start phpmock, connect to network {{ slotname }}"
   docker_container:
