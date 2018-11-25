@@ -85,6 +85,10 @@
   set_fact:
     END_TIME: "{{ lookup('pipe','date \"+%s\"') }}"
 
+- name: "Record elapsed time"
+  set_fact:
+    ELAPSED_TIME: "{{ '%H:%M:%S' | strftime(END_TIME |int - START_TIME|int) }}"
+
 - name: "Get bitbucket comment"
   uri:
     url: "{{ bitbucketURL }}/rest/api/latest/projects/{{ PULL_REQUEST_FROM_REPO_PROJECT_KEY }}/repos/{{ PULL_REQUEST_FROM_REPO_SLUG }}/pull-requests/{{ PULL_REQUEST_ID }}/comments/{{ bitbucketComment.json.id }}"
@@ -106,7 +110,7 @@
     force_basic_auth: yes
     status_code: 200
   vars:
-    msg: "{{ commentBB.json.text | replace('started', 'took ' + (strftime(END_TIME |int - START_TIME|int)|string)) | replace('\n','\\n') }}"
+    msg: "{{ commentBB.json.text | replace('started', 'SUCCESS, which took ' + (ELAPSED_TIME|string)) | replace('\n','\\n') }}"
 
 - name: "Calculate final results"
   docker_container:
