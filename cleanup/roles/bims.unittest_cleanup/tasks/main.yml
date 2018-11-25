@@ -15,4 +15,4 @@
 
 - name: "Free up slot"
   debug:
-    msg: {{ redis_container_tmp }}
+    msg: "{{ redis_container_tmp }}"
