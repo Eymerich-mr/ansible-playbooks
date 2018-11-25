@@ -16,4 +16,4 @@
 - name: "Free up slot"
   debug:
     msg: "{{ item.ansible_facts.docker_container.Output }}"
-  loop: "{{ redis_container_tmp.results |selectattr('ansible_facts.docker_container.Output', '0\n') }}"
+  loop: "{{ redis_container_tmp.results | selectattr('ansible_facts.docker_container.Output', '0\n') | list }}"
