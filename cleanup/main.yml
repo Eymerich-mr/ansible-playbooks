@@ -1,0 +1,12 @@
+---
+# This playbook is running the unit tests for BIMS API
+
+- hosts: all
+  gather_facts: false
+  vars:
+  - slots: "['integration', 'module', 'app', 'appController']"
+  - redisHost: "redis-19834.c6.eu-west-1-1.ec2.cloud.redislabs.com"
+  - redisPort: "19834"
+  - redisPass: "Temporal01!"
+  roles:
+  - { role: bims.unittest_cleanup, when: true}

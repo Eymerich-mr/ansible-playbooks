@@ -1,0 +1,18 @@
+---
+
+- name: "Look for expired slot"
+  docker_container:
+    name: "phpunit-cache-reader"
+    image: redis:32bit
+    detach: no
+    recreate: yes
+    cleanup: yes
+    command: "redis-cli -h {{ redisHost }} -p {{ redisPort }} -a {{ redisPass}} --no-auth-warning EXISTS {{ item }}"
+  register: "redis_container_tmp"
+  #until: "redis_container_tmp.ansible_facts.docker_container.Output == '1\n'"
+  changed_when: false
+  loop: "{{ slots }}"
+
+- name: "Free up slot"
+  debug:
+    msg: {{ redis_container_tmp }}
