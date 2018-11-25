@@ -62,19 +62,6 @@
     dest: "/tmp/api/app/config/parameters.yml"
     remote_src: yes
 
-- name: "Record end time"
-  set_fact:
-    END_TIME: "{{ lookup('pipe','date \"+%s\"') }}"
-
-- name: "Record elapsed time"
-  set_fact:
-    ELAPSED_TIME: "{{ '%H:%M:%S' | strftime(END_TIME |int - ansible_stats.data.START_TIME|int) }}"
-
-- name: "Notify bitbucket instance"
-  debug:
-    msg: "{{ a }}"
-  vars:
-    a: "{{ 'started' | replace('started', 'SUCCESS, which took ' + (ELAPSED_TIME|string)) | replace('\n','\\n') }}"
 #- name: Show awx_workflow_job_id
 #  debug:
 #    msg: "{{ awx_workflow_job_id | default('kk') }}"
