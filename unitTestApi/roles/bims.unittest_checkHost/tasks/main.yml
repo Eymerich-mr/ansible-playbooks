@@ -68,7 +68,7 @@
 
 - name: "Record elapsed time"
   set_fact:
-    ELAPSED_TIME: "{{ '%H:%M:%S' | strftime(END_TIME |int - START_TIME|int) }}"
+    ELAPSED_TIME: "{{ '%H:%M:%S' | strftime(END_TIME |int - ansible_stats.data.START_TIME|int) }}"
 
 - name: "Notify bitbucket instance"
   debug:
